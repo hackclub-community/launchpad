@@ -1,4 +1,3 @@
-# .github/workflows/format.yml
 name: Format
 
 on:
