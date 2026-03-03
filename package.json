@@ -37,6 +37,9 @@
 		"vite": "^7.3.1"
 	},
 	"dependencies": {
+		"@convex-dev/better-auth": "^0.10.13",
+		"@mmailaender/convex-better-auth-svelte": "^0.5.2",
+		"better-auth": "1.4.9",
 		"convex": "^1.32.0",
 		"convex-svelte": "^0.0.12"
 	}
