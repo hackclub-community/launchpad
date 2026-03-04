@@ -13,7 +13,8 @@
 	<Sidebar.Trigger />
 	{#if !sidebar.open}
 		<div
-			transition:slide={{ axis: 'x', duration: 200, easing: cubicOut }}
+			in:slide={{ axis: 'x', duration: 200, easing: cubicOut, delay: 150 }}
+			out:slide={{ axis: 'x', duration: 100, easing: cubicOut }}
 			class="flex gap-1 rounded-full px-1"
 		>
 			<Badge>Event name <ChevronDownIcon /></Badge>
