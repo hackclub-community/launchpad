@@ -5,8 +5,9 @@
 <Sidebar.Root variant="floating">
 	<Sidebar.Header>
 		<Sidebar.Menu>
-			<Sidebar.MenuItem class="flex h-9 items-center rounded-full bg-card pl-12">
-				Launchpad
+			<Sidebar.MenuItem class="flex h-9 flex-col justify-center rounded-full bg-card pl-12">
+				<p class="text-xs">Launchpad</p>
+				<p>Event name</p>
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
 	</Sidebar.Header>
