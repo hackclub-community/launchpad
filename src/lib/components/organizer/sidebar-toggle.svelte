@@ -8,7 +8,7 @@
 	const sidebar = useSidebar();
 </script>
 
-<div class="flex flex-row items-center rounded-lg border bg-sidebar p-1">
+<div class="fixed top-4 left-4 z-50 flex flex-row items-center rounded-lg border bg-sidebar p-1">
 	<Sidebar.Trigger />
 	{#if !sidebar.open}
 		<div
