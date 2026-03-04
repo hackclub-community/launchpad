@@ -6,6 +6,7 @@ import { query } from './_generated/server';
 import { betterAuth, type BetterAuthOptions } from 'better-auth/minimal';
 import authConfig from './auth.config';
 import authSchema from './betterAuth/schema';
+import { genericOAuth } from 'better-auth/plugins';
 
 const siteUrl = process.env.SITE_URL!;
 
@@ -21,14 +22,22 @@ export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
 	return {
 		baseURL: siteUrl,
 		database: authComponent.adapter(ctx),
-		// Configure simple, non-verified email/password to get started
 		emailAndPassword: {
-			enabled: true,
-			requireEmailVerification: false
+			enabled: false
 		},
 		plugins: [
-			// The Convex plugin is required for Convex compatibility
-			convex({ authConfig })
+			convex({ authConfig }),
+			genericOAuth({
+				config: [
+					{
+						providerId: 'hca',
+						clientId: process.env.HCA_CLIENT_ID!,
+						clientSecret: process.env.HCA_CLIENT_SECRET!,
+						discoveryUrl: 'https://auth.hackclub.com/.well-known/openid-configuration',
+						scopes: ['openid', 'email', 'profile']
+					}
+				]
+			})
 		]
 	} satisfies BetterAuthOptions;
 };
@@ -37,11 +46,10 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
 	return betterAuth(createAuthOptions(ctx));
 };
 
-// Example function for getting the current user
-// Feel free to edit, omit, etc.
+// Query to get current user
 export const getCurrentUser = query({
 	args: {},
 	handler: async (ctx) => {
-		return authComponent.getAuthUser(ctx);
+		return authComponent.safeGetAuthUser(ctx);
 	}
 });
