@@ -27,7 +27,21 @@
 	</Sidebar.Header>
 
 	<Sidebar.Content>
-		<Sidebar.Group />
+		{#each sidebarItems as item, i (i)}
+			<Sidebar.Group title={item.title}>
+				{#each item.items as subItem, j (j)}
+					<Sidebar.MenuItem>
+						<Sidebar.MenuButton>
+							{#snippet child({ props })}
+								<a href={subItem.href} {...props}>
+									{subItem.title}
+								</a>
+							{/snippet}
+						</Sidebar.MenuButton>
+					</Sidebar.MenuItem>
+				{/each}
+			</Sidebar.Group>
+		{/each}
 	</Sidebar.Content>
 	<Sidebar.Footer>
 		<Sidebar.Menu>
