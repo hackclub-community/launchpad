@@ -34,7 +34,7 @@ export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
 						clientId: process.env.HCA_CLIENT_ID!,
 						clientSecret: process.env.HCA_CLIENT_SECRET!,
 						discoveryUrl: 'https://auth.hackclub.com/.well-known/openid-configuration',
-						scopes: ['openid', 'email', 'name', 'profile']
+						scopes: ['openid', 'email', 'profile']
 					}
 				]
 			})
