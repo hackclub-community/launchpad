@@ -13,19 +13,9 @@
 			class="rounded-2xl p-8 shadow-2xl backdrop-blur-md"
 			style="background-color: rgba(0,0,0,0.6);"
 		>
-			<h1
-				class="mb-2 text-4xl"
-				style="font-family: 'Lalezar', sans-serif;"
-			>
-				Login
-			</h1>
+			<h1 class="mb-2 text-4xl" style="font-family: 'Lalezar', sans-serif;">Login</h1>
 
-			<p
-				class="mb-6"
-				style="font-family: 'Labrada', serif;"
-			>
-				Enter your attendee code
-			</p>
+			<p class="mb-6" style="font-family: 'Labrada', serif;">Enter your attendee code</p>
 
 			<div class="mb-4">
 				<Login />
