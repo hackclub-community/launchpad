@@ -3,6 +3,8 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from './ui/button/button.svelte';
 	import { authClient } from '$lib/auth-client';
+
+	let loading = $state(false);
 </script>
 
 <div class="flex w-fit flex-col items-center gap-4">
@@ -12,7 +14,7 @@
 			<Card.Description>You should have been provided this code by an organizer.</Card.Description>
 		</Card.Header>
 		<Card.Content class="flex justify-center">
-			<InputOTP.Root maxlength={6} autofocus>
+			<InputOTP.Root maxlength={6} autofocus disabled={loading}>
 				{#snippet children({ cells })}
 					<InputOTP.Group>
 						{#each cells.slice(0, 3) as cell, i (i)}
@@ -31,7 +33,9 @@
 	</Card.Root>
 	<Button
 		variant="ghost"
+		disabled={loading}
 		onclick={() => {
+			loading = true;
 			authClient.signIn.oauth2({ providerId: 'hca' });
 		}}>Log in as organizer</Button
 	>
