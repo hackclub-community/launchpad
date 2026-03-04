@@ -13,8 +13,8 @@
 			<Card.Title>Enter your attendee code</Card.Title>
 			<Card.Description>You should have been provided this code by an organizer.</Card.Description>
 		</Card.Header>
-		<Card.Content class="flex justify-center">
-			<InputOTP.Root maxlength={6} autofocus disabled={loading}>
+		<Card.Content>
+			<InputOTP.Root maxlength={6} autofocus disabled={loading} class="w-fit">
 				{#snippet children({ cells })}
 					<InputOTP.Group>
 						{#each cells.slice(0, 3) as cell, i (i)}
