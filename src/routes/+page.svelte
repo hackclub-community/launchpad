@@ -9,4 +9,12 @@
 	<Login />
 </div>
 <p class="fixed bottom-2 left-[50%] z-10 translate-x-[-50%]">Assemble - Summer 2022</p>
-<enhanced:img src={crowdImage} class="fixed top-0 left-0 h-full w-full object-cover" />
+
+<enhanced:img
+	onload={(e) => {
+		const img = e.currentTarget as HTMLImageElement;
+		img.style.opacity = '1';
+	}}
+	src={crowdImage}
+	class="fixed top-0 left-0 h-full w-full object-cover opacity-0 duration-500"
+/>
