@@ -2,6 +2,6 @@
 	import Login from '$lib/components/login.svelte';
 </script>
 
-<div class="flex w-full items-center justify-center pt-30">
+<div class="flex h-screen items-center justify-start px-10">
 	<Login />
 </div>

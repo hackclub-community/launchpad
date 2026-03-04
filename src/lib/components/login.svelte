@@ -7,7 +7,7 @@
 	let loading = $state(false);
 </script>
 
-<div class="flex w-fit flex-col items-center gap-4">
+<div class="flex w-fit flex-col items-start gap-4">
 	<Card.Root class="w-fit min-w-md">
 		<Card.Header>
 			<Card.Title>Enter your attendee code</Card.Title>
