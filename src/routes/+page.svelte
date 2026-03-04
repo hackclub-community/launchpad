@@ -1,8 +1,13 @@
-<div class="flex flex-col justify-center items-center min-h-screen w-full bg-gradient-to-br from-primary to-secondary text-white text-center px-4">
-	<h1 class="text-6xl font-bold mb-6 drop-shadow-lg">Welcome to Launchpad</h1>
-	<p class="text-2xl mb-8">A new hackathon attendee portal coming soon..</p>
+<div
+	class="flex min-h-screen w-full flex-col items-center justify-center bg-gradient-to-br from-primary to-secondary px-4 text-center text-white"
+>
+	<h1 class="mb-6 text-6xl font-bold drop-shadow-lg">Welcome to Launchpad</h1>
+	<p class="mb-8 text-2xl">A new hackathon attendee portal coming soon..</p>
 
-	<a href="/login" class="px-8 py-4 bg-white text-primary font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition">
+	<a
+		href="/login"
+		class="rounded-lg bg-white px-8 py-4 font-semibold text-primary shadow-lg transition hover:bg-gray-100"
+	>
 		Login
 	</a>
 </div>
