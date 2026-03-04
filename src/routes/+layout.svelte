@@ -1,4 +1,8 @@
 <script lang="ts">
+	import '@fontsource/kulim-park/200.css';
+	import '@fontsource/kulim-park/400.css';
+	import '@fontsource/kulim-park/600.css';
+
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { createSvelteAuthClient } from '@mmailaender/convex-better-auth-svelte/svelte';
