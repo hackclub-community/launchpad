@@ -2,6 +2,7 @@
 	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from './ui/button/button.svelte';
+	import { authClient } from '$lib/auth-client';
 </script>
 
 <div class="flex w-fit flex-col items-center gap-4">
@@ -28,5 +29,10 @@
 			</InputOTP.Root>
 		</Card.Content>
 	</Card.Root>
-	<Button variant="ghost">Log in as organizer</Button>
+	<Button
+		variant="ghost"
+		onclick={() => {
+			authClient.signIn.oauth2({ providerId: 'hca' });
+		}}>Log in as organizer</Button
+	>
 </div>
