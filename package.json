@@ -45,6 +45,7 @@
 	},
 	"dependencies": {
 		"@convex-dev/better-auth": "^0.10.13",
+		"@fontsource/kulim-park": "^5.2.8",
 		"@mmailaender/convex-better-auth-svelte": "^0.5.2",
 		"better-auth": "1.4.9",
 		"convex": "^1.32.0",

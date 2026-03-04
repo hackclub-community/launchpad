@@ -6,6 +6,7 @@
       "name": "launchpad",
       "dependencies": {
         "@convex-dev/better-auth": "^0.10.13",
+        "@fontsource/kulim-park": "^5.2.8",
         "@mmailaender/convex-better-auth-svelte": "^0.5.2",
         "better-auth": "1.4.9",
         "convex": "^1.32.0",
@@ -134,6 +135,8 @@
     "@floating-ui/dom": ["@floating-ui/dom@1.7.6", "", { "dependencies": { "@floating-ui/core": "^1.7.5", "@floating-ui/utils": "^0.2.11" } }, "sha512-9gZSAI5XM36880PPMm//9dfiEngYoC6Am2izES1FF406YFsjvyBMmeJ2g4SAju3xWwtuynNRFL2s9hgxpLI5SQ=="],
 
     "@floating-ui/utils": ["@floating-ui/utils@0.2.11", "", {}, "sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg=="],
+
+    "@fontsource/kulim-park": ["@fontsource/kulim-park@5.2.8", "", {}, "sha512-NQJD4uqIv7IGQpzU0Otzb56WnWl8ni6rnm4eZcZUPpMe4QGNimyEJ3hO93izHrBsNRSlP+WPlgCcfdOzLKI4Kw=="],
 
     "@hexagon/base64": ["@hexagon/base64@1.1.28", "", {}, "sha512-lhqDEAvWixy3bZ+UOYbPwUbBkwBq5C1LAJ/xPC8Oi+lL54oyakv/npbA0aU2hgCsx/1NUd4IBvV03+aUBWxerw=="],
 
