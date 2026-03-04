@@ -2,6 +2,18 @@
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronUpIcon } from '@lucide/svelte';
+
+	const sidebarItems: {
+		title?: string;
+		items: {
+			title: string;
+			href: string;
+		}[];
+	}[] = [
+		{
+			items: []
+		}
+	];
 </script>
 
 <Sidebar.Root variant="floating">
@@ -15,7 +27,6 @@
 	</Sidebar.Header>
 
 	<Sidebar.Content>
-		<Sidebar.Group />
 		<Sidebar.Group />
 	</Sidebar.Content>
 	<Sidebar.Footer>
