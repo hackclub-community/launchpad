@@ -16,5 +16,5 @@
 		img.style.opacity = '1';
 	}}
 	src={crowdImage}
-	class="fixed top-0 left-0 h-full w-full object-cover opacity-0 duration-200"
+	class="fixed top-0 left-0 h-full w-full object-cover opacity-0 duration-500"
 />
