@@ -8,7 +8,7 @@
 	<Card.Root class="w-fit min-w-md">
 		<Card.Header>
 			<Card.Title>Enter your attendee code</Card.Title>
-			<Card.Description>You should have been provided this code by the organizer.</Card.Description>
+			<Card.Description>You should have been provided this code by an organizer.</Card.Description>
 		</Card.Header>
 		<Card.Content class="flex justify-center">
 			<InputOTP.Root maxlength={6}>
