@@ -29,7 +29,8 @@ export default defineConfig(
 					// I will force typescript onto you and you will not complain
 					script: 'ts'
 				}
-			]
+			],
+			'svelte/no-navigation-without-resolve': ['warn']
 		}
 	},
 	{
