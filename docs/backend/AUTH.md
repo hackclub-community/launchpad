@@ -8,7 +8,7 @@ This runs on Convex, and is implemented following the [Convex + Better Auth](htt
 
 [HCA (Hack Club Auth)](https://auth.hackclub.com/) is configured as an OAuth provider via the [generic OAuth plugin](https://better-auth.com/docs/plugins/generic-oauth).
 
-To set this up, you have to to set `HCA_CLIENT_ID` and `HCA_CLIENT_SECRET` environment variables *in Convex*.
+To set this up, you have to to set `HCA_CLIENT_ID` and `HCA_CLIENT_SECRET` environment variables _in Convex_.
 
 ```bash
 npx convex env set HCA_CLIENT_ID=$(read)
