@@ -13,7 +13,7 @@
 	{#if !sidebar.open}
 		<div
 			transition:slide={{ axis: 'x', duration: 200, easing: cubicOut }}
-			class="rounded-full px-1"
+			class="flex rounded-full px-1"
 		>
 			<Badge>Launchpad</Badge>
 		</div>
