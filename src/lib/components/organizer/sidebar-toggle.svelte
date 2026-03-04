@@ -13,7 +13,7 @@
 	<Sidebar.Trigger />
 	{#if !sidebar.open}
 		<div
-			in:slide={{ axis: 'x', duration: 200, easing: cubicOut, delay: 150 }}
+			in:slide={{ axis: 'x', duration: 100, easing: cubicOut, delay: 150 }}
 			out:slide={{ axis: 'x', duration: 100, easing: cubicOut }}
 			class="flex gap-1 rounded-full px-1"
 		>
