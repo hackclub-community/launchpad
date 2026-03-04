@@ -1,5 +1,7 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import * as Avatar from '$lib/components/ui/avatar/index.js';
+	import { ChevronUpIcon } from '@lucide/svelte';
 </script>
 
 <Sidebar.Root variant="floating">
@@ -16,5 +18,17 @@
 		<Sidebar.Group />
 		<Sidebar.Group />
 	</Sidebar.Content>
-	<Sidebar.Footer />
+	<Sidebar.Footer>
+		<Sidebar.Menu>
+			<Sidebar.MenuItem>
+				<Sidebar.MenuButton size="lg">
+					<Avatar.Root>
+						<Avatar.Fallback>U</Avatar.Fallback>
+					</Avatar.Root>
+					Username
+					<ChevronUpIcon class="mr-1 ml-auto" />
+				</Sidebar.MenuButton>
+			</Sidebar.MenuItem>
+		</Sidebar.Menu>
+	</Sidebar.Footer>
 </Sidebar.Root>
