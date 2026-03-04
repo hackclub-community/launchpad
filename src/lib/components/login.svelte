@@ -11,7 +11,7 @@
 			<Card.Description>You should have been provided this code by an organizer.</Card.Description>
 		</Card.Header>
 		<Card.Content class="flex justify-center">
-			<InputOTP.Root maxlength={6}>
+			<InputOTP.Root maxlength={6} autofocus>
 				{#snippet children({ cells })}
 					<InputOTP.Group>
 						{#each cells.slice(0, 3) as cell, i (i)}
