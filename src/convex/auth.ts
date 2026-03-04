@@ -36,8 +36,7 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
 	return betterAuth(createAuthOptions(ctx));
 };
 
-// Example function for getting the current user
-// Feel free to edit, omit, etc.
+// Query to get current user
 export const getCurrentUser = query({
 	args: {},
 	handler: async (ctx) => {
