@@ -52,7 +52,7 @@
 			disabled={loading}
 			onclick={() => {
 				loading = true;
-				authClient.signIn.oauth2({ providerId: 'hca' });
+				authClient.signIn.oauth2({ providerId: 'hca', callbackURL: '/organizer' });
 			}}
 		>
 			Log in as organizer
