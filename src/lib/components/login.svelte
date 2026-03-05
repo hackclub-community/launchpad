@@ -3,7 +3,9 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from './ui/button/button.svelte';
 	import { authClient } from '$lib/auth-client';
+	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 
+	const auth = useAuth();
 	let loading = $state(false);
 </script>
 
@@ -31,12 +33,21 @@
 			</InputOTP.Root>
 		</Card.Content>
 	</Card.Root>
-	<Button
-		variant="ghost"
-		disabled={loading}
-		onclick={() => {
-			loading = true;
-			authClient.signIn.oauth2({ providerId: 'hca' });
-		}}>Log in as organizer</Button
-	>
+	{#if auth.isLoading}
+		<!-- Auth should never load because its preloaded on server -->
+		If you are seeing this something is broken please DM Ingo
+	{:else if auth.isAuthenticated}
+		<Button variant="ghost" disabled={loading} href="/organizer">Go to dashboard</Button>
+	{:else}
+		<Button
+			variant="ghost"
+			disabled={loading}
+			onclick={() => {
+				loading = true;
+				authClient.signIn.oauth2({ providerId: 'hca' });
+			}}
+		>
+			Log in as organizer
+		</Button>
+	{/if}
 </div>
