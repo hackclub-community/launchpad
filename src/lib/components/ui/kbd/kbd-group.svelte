@@ -7,15 +7,14 @@
 		class: className,
 		children,
 		...restProps
-	}: WithElementRef<HTMLAttributes<HTMLLIElement>, HTMLLIElement> = $props();
+	}: WithElementRef<HTMLAttributes<HTMLElement>> = $props();
 </script>
 
-<li
+<kbd
 	bind:this={ref}
-	data-slot="sidebar-menu-item"
-	data-sidebar="menu-item"
-	class={cn('group/menu-item relative list-none', className)}
+	data-slot="kbd-group"
+	class={cn('inline-flex items-center gap-1', className)}
 	{...restProps}
 >
 	{@render children?.()}
-</li>
+</kbd>

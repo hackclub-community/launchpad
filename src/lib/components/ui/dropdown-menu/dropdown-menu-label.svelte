@@ -5,17 +5,20 @@
 	let {
 		ref = $bindable(null),
 		class: className,
+		inset,
 		children,
 		...restProps
-	}: WithElementRef<HTMLAttributes<HTMLLIElement>, HTMLLIElement> = $props();
+	}: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
+		inset?: boolean;
+	} = $props();
 </script>
 
-<li
+<div
 	bind:this={ref}
-	data-slot="sidebar-menu-item"
-	data-sidebar="menu-item"
-	class={cn('group/menu-item relative list-none', className)}
+	data-slot="dropdown-menu-label"
+	data-inset={inset}
+	class={cn('px-2 py-1.5 text-sm font-semibold data-[inset]:ps-8', className)}
 	{...restProps}
 >
 	{@render children?.()}
-</li>
+</div>
