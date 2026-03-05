@@ -2,6 +2,7 @@
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import {
+		type IconProps,
 		ChevronUpIcon,
 		HouseIcon,
 		InfoIcon,
@@ -9,7 +10,7 @@
 		UserLockIcon,
 		SendIcon,
 		UsersIcon,
-		type IconProps
+		GalleryVerticalEndIcon
 	} from '@lucide/svelte';
 	import type { Component } from 'svelte';
 	import { cn } from '$lib/utils';
@@ -42,6 +43,10 @@
 				{
 					title: 'Send',
 					icon: SendIcon
+				},
+				{
+					title: 'Timeline',
+					icon: GalleryVerticalEndIcon
 				}
 			]
 		},
