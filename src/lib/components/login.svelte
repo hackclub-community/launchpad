@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Item from '$lib/components/ui/item/index.js';
 	import Button from './ui/button/button.svelte';
 	import { authClient } from '$lib/auth-client';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
@@ -37,7 +38,14 @@
 		<!-- Auth should never load because its preloaded on server -->
 		If you are seeing this something is broken please DM Ingo
 	{:else if auth.isAuthenticated}
-		<Button variant="ghost" disabled={loading} href="/organizer">Go to dashboard</Button>
+		<Item.Root variant="outline" class="w-full rounded-xl bg-linear-to-l from-border to-card">
+			<Item.Content>
+				<Item.Title>You're already logged in</Item.Title>
+			</Item.Content>
+			<Item.Actions>
+				<Button variant="default" href="/organizer" size="sm">Dashboard</Button>
+			</Item.Actions>
+		</Item.Root>
 	{:else}
 		<Button
 			variant="ghost"
