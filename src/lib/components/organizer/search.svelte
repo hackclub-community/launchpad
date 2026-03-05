@@ -1,11 +1,24 @@
 <script lang="ts">
 	import * as Command from '$lib/components/ui/command/index.js';
+	import { menuItems } from './menu-items';
 </script>
 
 <Command.Dialog open>
 	<Command.Input placeholder="Type a command or search..." />
 	<Command.List>
 		<Command.Empty>No results found.</Command.Empty>
+		{#each menuItems as item, i (i)}
+			<Command.Group heading={item.title}>
+				{#each item.items as subItem, j (j)}
+					<Command.Item>
+						{#if subItem.icon}
+							<subItem.icon />
+						{/if}
+						{subItem.title}</Command.Item
+					>
+				{/each}
+			</Command.Group>
+		{/each}
 		<Command.Group heading="Suggestions">
 			<Command.Item>Calendar</Command.Item>
 			<Command.Item>Search Emoji</Command.Item>
