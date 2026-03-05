@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	$: user = $page.data.user;
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronUpIcon, SearchIcon } from '@lucide/svelte';
@@ -44,13 +46,14 @@
 							<Sidebar.MenuButton>
 								{#snippet child({ props })}
 									{#if subItem.href}
-										<a
-											href={subItem.href}
+										<button
+											type="button"
+											onclick={() => subItem.href && window.location.assign(subItem.href)}
 											{...props}
 											class={cn(props.class || '', 'cursor-pointer')}
 										>
 											{@render menuItemContent()}
-										</a>
+										</button>
 									{:else}
 										<button
 											onclick={subItem.onClick}
@@ -81,9 +84,9 @@
 					<DropdownMenu.Trigger class="w-full">
 						<Sidebar.MenuButton size="lg" class="cursor-pointer border shadow-xs">
 							<Avatar.Root>
-								<Avatar.Fallback>U</Avatar.Fallback>
+								<Avatar.Fallback>{user?.name?.[0]}</Avatar.Fallback>
 							</Avatar.Root>
-							Username
+							{user?.name}
 							<ChevronUpIcon class="mr-1 ml-auto" />
 						</Sidebar.MenuButton>
 					</DropdownMenu.Trigger>

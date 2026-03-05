@@ -4,6 +4,11 @@ declare global {
 	namespace App {
 		interface Locals {
 			token: string | undefined;
+			user:
+				| {
+					name?: string | null;
+				  }
+				| null;
 		}
 		// interface Error {}
 		// interface Locals {}
