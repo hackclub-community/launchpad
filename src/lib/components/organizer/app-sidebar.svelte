@@ -16,6 +16,7 @@
 	import Button from '../ui/button/button.svelte';
 	import KbdGroup from '../ui/kbd/kbd-group.svelte';
 	import Kbd from '../ui/kbd/kbd.svelte';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 
 	const sidebarItems: {
 		title?: string;
@@ -124,13 +125,27 @@
 	<Sidebar.Footer>
 		<Sidebar.Menu>
 			<Sidebar.MenuItem>
-				<Sidebar.MenuButton size="lg" class="cursor-pointer border shadow-xs">
-					<Avatar.Root>
-						<Avatar.Fallback>U</Avatar.Fallback>
-					</Avatar.Root>
-					Username
-					<ChevronUpIcon class="mr-1 ml-auto" />
-				</Sidebar.MenuButton>
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger class="w-full">
+						<Sidebar.MenuButton size="lg" class="cursor-pointer border shadow-xs">
+							<Avatar.Root>
+								<Avatar.Fallback>U</Avatar.Fallback>
+							</Avatar.Root>
+							Username
+							<ChevronUpIcon class="mr-1 ml-auto" />
+						</Sidebar.MenuButton>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content align="end">
+						<DropdownMenu.Group>
+							<DropdownMenu.Label>My Account</DropdownMenu.Label>
+							<DropdownMenu.Separator />
+							<DropdownMenu.Item>Profile</DropdownMenu.Item>
+							<DropdownMenu.Item>Billing</DropdownMenu.Item>
+							<DropdownMenu.Item>Team</DropdownMenu.Item>
+							<DropdownMenu.Item>Subscription</DropdownMenu.Item>
+						</DropdownMenu.Group>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
 	</Sidebar.Footer>
