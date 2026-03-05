@@ -1,7 +1,14 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import { ChevronUpIcon, HouseIcon, type IconProps } from '@lucide/svelte';
+	import {
+		ChevronUpIcon,
+		HouseIcon,
+		InfoIcon,
+		UserIcon,
+		UsersIcon,
+		type IconProps
+	} from '@lucide/svelte';
 	import type { Component } from 'svelte';
 
 	const sidebarItems: {
@@ -21,7 +28,8 @@
 				},
 				{
 					title: 'Participants',
-					href: '/organizer/participants'
+					href: '/organizer/participants',
+					icon: UsersIcon
 				}
 			]
 		},
@@ -30,11 +38,13 @@
 			items: [
 				{
 					title: 'Event Details',
-					href: '/organizer/details'
+					href: '/organizer/details',
+					icon: InfoIcon
 				},
 				{
 					title: 'Members',
-					href: '/organizer/members'
+					href: '/organizer/members',
+					icon: UserIcon
 				}
 			]
 		}
