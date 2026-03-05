@@ -9,6 +9,9 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { menuItems } from './menu-items';
 	import { searchState } from './search-state.svelte';
+	import { authClient } from '$lib/auth-client';
+
+	const session = authClient.useSession();
 </script>
 
 <Sidebar.Root variant="floating">
@@ -81,9 +84,17 @@
 					<DropdownMenu.Trigger class="w-full">
 						<Sidebar.MenuButton size="lg" class="cursor-pointer border shadow-xs">
 							<Avatar.Root>
-								<Avatar.Fallback>U</Avatar.Fallback>
+								<Avatar.Fallback
+									>{($session.data?.user?.name ?? 'U')
+										.split(' ')
+										.filter((n) => n.length > 0)
+										.map((n) => n[0])
+										.join('')
+										.toUpperCase()
+										.slice(0, 2)}</Avatar.Fallback
+								>
 							</Avatar.Root>
-							Username
+							{$session.data?.user?.name ?? 'User'}
 							<ChevronUpIcon class="mr-1 ml-auto" />
 						</Sidebar.MenuButton>
 					</DropdownMenu.Trigger>
