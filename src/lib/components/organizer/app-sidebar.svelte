@@ -8,6 +8,7 @@
 	import Kbd from '../ui/kbd/kbd.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { menuItems } from './menu-items';
+	import { searchState } from './search-state.svelte';
 </script>
 
 <Sidebar.Root variant="floating">
@@ -18,7 +19,11 @@
 				<p>Event name</p>
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
-		<Button variant="outline" class="justify-start">
+		<Button
+			variant="outline"
+			class="justify-start"
+			onclick={() => (searchState.open = !searchState.open)}
+		>
 			<SearchIcon />
 			Search
 			<KbdGroup class="ml-auto">
