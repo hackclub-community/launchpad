@@ -28,18 +28,23 @@
 
 	<Sidebar.Content>
 		{#each sidebarItems as item, i (i)}
-			<Sidebar.Group title={item.title}>
-				{#each item.items as subItem, j (j)}
-					<Sidebar.MenuItem>
-						<Sidebar.MenuButton>
-							{#snippet child({ props })}
-								<a href={subItem.href} {...props}>
-									{subItem.title}
-								</a>
-							{/snippet}
-						</Sidebar.MenuButton>
-					</Sidebar.MenuItem>
-				{/each}
+			<Sidebar.Group>
+				{#if item.title}
+					<Sidebar.GroupLabel>{item.title}</Sidebar.GroupLabel>
+				{/if}
+				<Sidebar.GroupContent>
+					{#each item.items as subItem, j (j)}
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton>
+								{#snippet child({ props })}
+									<a href={subItem.href} {...props}>
+										{subItem.title}
+									</a>
+								{/snippet}
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+					{/each}
+				</Sidebar.GroupContent>
 			</Sidebar.Group>
 		{/each}
 	</Sidebar.Content>
