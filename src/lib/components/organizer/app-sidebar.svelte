@@ -6,8 +6,8 @@
 		HouseIcon,
 		InfoIcon,
 		SearchIcon,
+		UserLockIcon,
 		SendIcon,
-		UserIcon,
 		UsersIcon,
 		type IconProps
 	} from '@lucide/svelte';
@@ -54,9 +54,9 @@
 					icon: InfoIcon
 				},
 				{
-					title: 'Members',
-					href: '/organizer/members',
-					icon: UserIcon
+					title: 'Organizers',
+					href: '/organizer/organizers',
+					icon: UserLockIcon
 				}
 			]
 		}
@@ -139,10 +139,8 @@
 						<DropdownMenu.Group>
 							<DropdownMenu.Label>My Account</DropdownMenu.Label>
 							<DropdownMenu.Separator />
-							<DropdownMenu.Item>Profile</DropdownMenu.Item>
-							<DropdownMenu.Item>Billing</DropdownMenu.Item>
-							<DropdownMenu.Item>Team</DropdownMenu.Item>
-							<DropdownMenu.Item>Subscription</DropdownMenu.Item>
+							<DropdownMenu.Item>Settings</DropdownMenu.Item>
+							<DropdownMenu.Item>Sign out</DropdownMenu.Item>
 						</DropdownMenu.Group>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
