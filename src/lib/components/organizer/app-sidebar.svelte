@@ -5,6 +5,7 @@
 		ChevronUpIcon,
 		HouseIcon,
 		InfoIcon,
+		SendIcon,
 		UserIcon,
 		UsersIcon,
 		type IconProps
@@ -31,6 +32,10 @@
 					title: 'Teams',
 					href: '/organizer/teams',
 					icon: UsersIcon
+				},
+				{
+					title: 'Send',
+					icon: SendIcon
 				}
 			]
 		},
