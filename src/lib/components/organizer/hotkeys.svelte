@@ -9,6 +9,6 @@
 			e.preventDefault();
 		});
 
-		return () => hotkeys.unbind('ctrl+s,command+s');
+		return () => hotkeys.unbind('ctrl+k,command+k');
 	});
 </script>
