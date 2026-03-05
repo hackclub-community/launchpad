@@ -3,12 +3,12 @@
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronUpIcon, SearchIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils';
-	import Button from '../ui/button/button.svelte';
-	import KbdGroup from '../ui/kbd/kbd-group.svelte';
-	import Kbd from '../ui/kbd/kbd.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import KbdGroup from '$lib/components/ui/kbd/kbd-group.svelte';
+	import Kbd from '$lib/components/ui/kbd/kbd.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import { menuItems } from './menu-items';
-	import { searchState } from './search-state.svelte';
+	import { menuItems } from '../menu-items';
+	import { searchState } from '../search/search-state.svelte';
 </script>
 
 <Sidebar.Root variant="floating">
