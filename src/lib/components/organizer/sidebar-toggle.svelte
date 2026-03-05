@@ -4,7 +4,7 @@
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
 	import { cubicOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
-	import { ChevronDownIcon } from '@lucide/svelte';
+	import { SearchIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils';
 
 	const sidebar = useSidebar();
@@ -23,8 +23,8 @@
 			out:slide={{ axis: 'x', duration: 100, easing: cubicOut }}
 			class="flex gap-1 rounded-full px-1"
 		>
-			<Badge>Event name <ChevronDownIcon /></Badge>
-			<Badge variant="outline">Launchpad</Badge>
+			<Badge><SearchIcon /> Search</Badge>
+			<Badge variant="outline">Event name</Badge>
 		</div>
 	{/if}
 </div>
