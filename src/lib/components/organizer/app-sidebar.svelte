@@ -46,6 +46,7 @@
 				},
 				{
 					title: 'Timeline',
+					href: '/organizer/timeline',
 					icon: GalleryVerticalEndIcon
 				}
 			]
