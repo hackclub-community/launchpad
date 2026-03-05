@@ -5,6 +5,7 @@
 		ChevronUpIcon,
 		HouseIcon,
 		InfoIcon,
+		SearchIcon,
 		SendIcon,
 		UserIcon,
 		UsersIcon,
@@ -12,6 +13,7 @@
 	} from '@lucide/svelte';
 	import type { Component } from 'svelte';
 	import { cn } from '$lib/utils';
+	import Button from '../ui/button/button.svelte';
 
 	const sidebarItems: {
 		title?: string;
@@ -59,13 +61,14 @@
 </script>
 
 <Sidebar.Root variant="floating">
-	<Sidebar.Header>
+	<Sidebar.Header class="space-y-2">
 		<Sidebar.Menu>
 			<Sidebar.MenuItem class="flex h-9 flex-col justify-center rounded-full bg-card pl-12">
 				<p class="text-xs">Launchpad</p>
 				<p>Event name</p>
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
+		<Button variant="outline" class="justify-start"><SearchIcon />Search</Button>
 	</Sidebar.Header>
 
 	<Sidebar.Content>
