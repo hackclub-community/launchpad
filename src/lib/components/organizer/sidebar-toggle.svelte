@@ -5,11 +5,17 @@
 	import { cubicOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 	import { ChevronDownIcon } from '@lucide/svelte';
+	import { cn } from '$lib/utils';
 
 	const sidebar = useSidebar();
 </script>
 
-<div class="fixed top-4 left-4 z-50 flex flex-row items-center rounded-lg border bg-sidebar p-1">
+<div
+	class={cn(
+		'fixed top-4 left-4 z-50 flex flex-row items-center rounded-lg border bg-sidebar p-1 duration-200',
+		sidebar.open && 'border-transparent'
+	)}
+>
 	<Sidebar.Trigger />
 	{#if !sidebar.open}
 		<div
