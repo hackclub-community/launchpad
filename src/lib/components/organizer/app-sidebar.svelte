@@ -1,20 +1,23 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import { ChevronUpIcon } from '@lucide/svelte';
+	import { ChevronUpIcon, HouseIcon, type IconProps } from '@lucide/svelte';
+	import type { Component } from 'svelte';
 
 	const sidebarItems: {
 		title?: string;
 		items: {
 			title: string;
 			href: string;
+			icon?: Component<IconProps>;
 		}[];
 	}[] = [
 		{
 			items: [
 				{
 					title: 'Home',
-					href: '/organizer'
+					href: '/organizer',
+					icon: HouseIcon
 				},
 				{
 					title: 'Participants',
@@ -60,6 +63,9 @@
 							<Sidebar.MenuButton>
 								{#snippet child({ props })}
 									<a href={subItem.href} {...props}>
+										{#if subItem.icon}
+											<subItem.icon />
+										{/if}
 										{subItem.title}
 									</a>
 								{/snippet}
