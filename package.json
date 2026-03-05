@@ -51,6 +51,7 @@
 		"better-auth": "1.4.9",
 		"convex": "^1.32.0",
 		"convex-svelte": "^0.0.12",
+		"hotkeys-js": "^4.0.2",
 		"mode-watcher": "^1.1.0"
 	}
 }
