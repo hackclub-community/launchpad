@@ -124,7 +124,7 @@
 	<Sidebar.Footer>
 		<Sidebar.Menu>
 			<Sidebar.MenuItem>
-				<Sidebar.MenuButton size="lg" class="border shadow-xs">
+				<Sidebar.MenuButton size="lg" class="cursor-pointer border shadow-xs">
 					<Avatar.Root>
 						<Avatar.Fallback>U</Avatar.Fallback>
 					</Avatar.Root>
