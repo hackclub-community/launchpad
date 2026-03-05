@@ -5,6 +5,7 @@
 	import Button from './ui/button/button.svelte';
 	import { authClient } from '$lib/auth-client';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
+	import { ArrowRight } from '@lucide/svelte';
 
 	const auth = useAuth();
 	let loading = $state(false);
@@ -40,10 +41,10 @@
 	{:else if auth.isAuthenticated}
 		<Item.Root variant="outline" class="w-full rounded-xl bg-linear-to-l from-border to-card">
 			<Item.Content>
-				<Item.Title>You're already logged in</Item.Title>
+				<Item.Title>You're already logged in as an organizer!</Item.Title>
 			</Item.Content>
 			<Item.Actions>
-				<Button variant="default" href="/organizer" size="sm">Dashboard</Button>
+				<Button variant="default" href="/organizer"><ArrowRight />Dashboard</Button>
 			</Item.Actions>
 		</Item.Root>
 	{:else}
