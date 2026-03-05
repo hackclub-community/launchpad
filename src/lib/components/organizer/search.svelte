@@ -2,9 +2,10 @@
 	import { goto } from '$app/navigation';
 	import * as Command from '$lib/components/ui/command/index.js';
 	import { menuItems } from './menu-items';
+	import { searchState } from './search-state.svelte';
 </script>
 
-<Command.Dialog open>
+<Command.Dialog open={searchState.open} onOpenChange={(open) => (searchState.open = open)}>
 	<Command.Input placeholder="Type a command or search..." />
 	<Command.List>
 		<Command.Empty>No results found.</Command.Empty>

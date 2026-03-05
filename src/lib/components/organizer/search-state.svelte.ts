@@ -1,1 +1,1 @@
-export const searchOpen = $state(false);
+export const searchState = $state({ open: false });
