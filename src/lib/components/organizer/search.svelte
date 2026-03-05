@@ -28,16 +28,5 @@
 				{/each}
 			</Command.Group>
 		{/each}
-		<Command.Group heading="Suggestions">
-			<Command.Item>Calendar</Command.Item>
-			<Command.Item>Search Emoji</Command.Item>
-			<Command.Item>Calculator</Command.Item>
-		</Command.Group>
-		<Command.Separator />
-		<Command.Group heading="Settings">
-			<Command.Item>Profile</Command.Item>
-			<Command.Item>Billing</Command.Item>
-			<Command.Item>Settings</Command.Item>
-		</Command.Group>
 	</Command.List>
 </Command.Dialog>
