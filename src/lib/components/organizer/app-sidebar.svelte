@@ -14,6 +14,8 @@
 	import type { Component } from 'svelte';
 	import { cn } from '$lib/utils';
 	import Button from '../ui/button/button.svelte';
+	import KbdGroup from '../ui/kbd/kbd-group.svelte';
+	import Kbd from '../ui/kbd/kbd.svelte';
 
 	const sidebarItems: {
 		title?: string;
@@ -68,7 +70,13 @@
 				<p>Event name</p>
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
-		<Button variant="outline" class="justify-start"><SearchIcon />Search</Button>
+		<Button variant="outline" class="justify-start">
+			<SearchIcon />
+			Search
+			<KbdGroup class="ml-auto">
+				<Kbd>⌘</Kbd><Kbd>K</Kbd>
+			</KbdGroup>
+		</Button>
 	</Sidebar.Header>
 
 	<Sidebar.Content>
