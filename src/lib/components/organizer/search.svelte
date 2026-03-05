@@ -12,10 +12,10 @@
 				{#each item.items as subItem, j (j)}
 					<Command.Item>
 						{#if subItem.icon}
-							<subItem.icon />
+							<subItem.icon class="text-inherit" />
 						{/if}
-						{subItem.title}</Command.Item
-					>
+						{subItem.title}
+					</Command.Item>
 				{/each}
 			</Command.Group>
 		{/each}
