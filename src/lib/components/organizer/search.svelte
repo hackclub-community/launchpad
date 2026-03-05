@@ -19,6 +19,7 @@
 							} else if (subItem.onClick) {
 								subItem.onClick();
 							}
+							searchState.open = false;
 						}}
 					>
 						{#if subItem.icon}
