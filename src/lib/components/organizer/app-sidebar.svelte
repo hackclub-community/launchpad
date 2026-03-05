@@ -11,7 +11,29 @@
 		}[];
 	}[] = [
 		{
-			items: []
+			items: [
+				{
+					title: 'Home',
+					href: '/organizer'
+				},
+				{
+					title: 'Participants',
+					href: '/organizer/participants'
+				}
+			]
+		},
+		{
+			title: 'Management',
+			items: [
+				{
+					title: 'Event Details',
+					href: '/organizer/details'
+				},
+				{
+					title: 'Members',
+					href: '/organizer/members'
+				}
+			]
 		}
 	];
 </script>
