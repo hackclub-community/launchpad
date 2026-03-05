@@ -11,6 +11,7 @@
 		type IconProps
 	} from '@lucide/svelte';
 	import type { Component } from 'svelte';
+	import { cn } from '$lib/utils';
 
 	const sidebarItems: {
 		title?: string;
@@ -79,11 +80,19 @@
 							<Sidebar.MenuButton>
 								{#snippet child({ props })}
 									{#if subItem.href}
-										<a href={subItem.href} {...props}>
+										<a
+											href={subItem.href}
+											{...props}
+											class={cn(props.class || '', 'cursor-pointer')}
+										>
 											{@render menuItemContent()}
 										</a>
 									{:else}
-										<button onclick={subItem.onClick} {...props}>
+										<button
+											onclick={subItem.onClick}
+											{...props}
+											class={cn(props.class || '', 'cursor-pointer')}
+										>
 											{@render menuItemContent()}
 										</button>
 									{/if}
