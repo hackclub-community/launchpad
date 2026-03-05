@@ -12,7 +12,7 @@
 </script>
 
 <div class="flex w-fit flex-col items-start gap-4">
-	<Card.Root class="w-fit min-w-md">
+	<Card.Root class="w-fit min-w-md bg-card/75 backdrop-blur-lg">
 		<Card.Header>
 			<Card.Title>Enter your attendee code</Card.Title>
 			<Card.Description>You should have been provided this code by an organizer.</Card.Description>
@@ -39,7 +39,10 @@
 		<!-- Auth should never load because its preloaded on server -->
 		If you are seeing this something is broken please DM Ingo
 	{:else if auth.isAuthenticated}
-		<Item.Root variant="outline" class="w-full rounded-xl bg-linear-to-l from-border to-card">
+		<Item.Root
+			variant="outline"
+			class="w-full rounded-xl bg-linear-to-l from-border/75 to-card/75 backdrop-blur-lg"
+		>
 			<Item.Content>
 				<Item.Title>You're already logged in as an organizer!</Item.Title>
 			</Item.Content>
