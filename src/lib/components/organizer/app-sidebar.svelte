@@ -27,8 +27,8 @@
 					icon: HouseIcon
 				},
 				{
-					title: 'Participants',
-					href: '/organizer/participants',
+					title: 'Teams',
+					href: '/organizer/teams',
 					icon: UsersIcon
 				}
 			]
