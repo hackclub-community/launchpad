@@ -15,7 +15,8 @@
 		title?: string;
 		items: {
 			title: string;
-			href: string;
+			href?: string;
+			onClick?: () => void;
 			icon?: Component<IconProps>;
 		}[];
 	}[] = [
@@ -72,12 +73,21 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton>
 								{#snippet child({ props })}
-									<a href={subItem.href} {...props}>
+									{#if subItem.href}
+										<a href={subItem.href} {...props}>
+											{@render menuItemContent()}
+										</a>
+									{:else}
+										<button onclick={subItem.onClick} {...props}>
+											{@render menuItemContent()}
+										</button>
+									{/if}
+									{#snippet menuItemContent()}
 										{#if subItem.icon}
 											<subItem.icon />
 										{/if}
 										{subItem.title}
-									</a>
+									{/snippet}
 								{/snippet}
 							</Sidebar.MenuButton>
 						</Sidebar.MenuItem>
