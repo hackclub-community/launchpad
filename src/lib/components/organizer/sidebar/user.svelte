@@ -3,6 +3,16 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronUpIcon } from '@lucide/svelte';
+	import type { FunctionReturnType } from 'convex/server';
+	import type { api } from '$convex/_generated/api';
+
+	const {
+		data
+	}: {
+		data: {
+			currentUser: FunctionReturnType<typeof api.auth.getCurrentUser>;
+		};
+	} = $props();
 </script>
 
 <Sidebar.MenuItem>
@@ -10,9 +20,9 @@
 		<DropdownMenu.Trigger class="w-full">
 			<Sidebar.MenuButton size="lg" class="cursor-pointer border shadow-xs">
 				<Avatar.Root>
-					<Avatar.Fallback>U</Avatar.Fallback>
+					<Avatar.Fallback>{data.currentUser?.name.charAt(0) || ''}</Avatar.Fallback>
 				</Avatar.Root>
-				Username
+				{data.currentUser?.name}
 				<ChevronUpIcon class="mr-1 ml-auto" />
 			</Sidebar.MenuButton>
 		</DropdownMenu.Trigger>

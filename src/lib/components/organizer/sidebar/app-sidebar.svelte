@@ -8,6 +8,8 @@
 	import { menuItems } from '../menu-items';
 	import { searchState } from '../search/search-state.svelte';
 	import User from './user.svelte';
+
+	const { data } = $props();
 </script>
 
 <Sidebar.Root variant="floating">
@@ -75,7 +77,7 @@
 	</Sidebar.Content>
 	<Sidebar.Footer>
 		<Sidebar.Menu>
-			<User />
+			<User {data} />
 		</Sidebar.Menu>
 	</Sidebar.Footer>
 </Sidebar.Root>

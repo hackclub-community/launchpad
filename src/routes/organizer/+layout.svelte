@@ -4,11 +4,11 @@
 	import SidebarToggle from '$lib/components/organizer/sidebar/sidebar-toggle.svelte';
 	import Search from '$lib/components/organizer/search/search.svelte';
 	import Hotkeys from '$lib/components/organizer/hotkeys.svelte';
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <Sidebar.Provider>
-	<AppSidebar />
+	<AppSidebar {data} />
 	<Search />
 	<Hotkeys />
 	<main class="pt-2 pl-2">
