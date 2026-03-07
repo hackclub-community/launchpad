@@ -1,14 +1,15 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import { ChevronUpIcon, SearchIcon } from '@lucide/svelte';
+	import { SearchIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils';
-	import Button from '../ui/button/button.svelte';
-	import KbdGroup from '../ui/kbd/kbd-group.svelte';
-	import Kbd from '../ui/kbd/kbd.svelte';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import { menuItems } from './menu-items';
-	import { searchState } from './search-state.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import KbdGroup from '$lib/components/ui/kbd/kbd-group.svelte';
+	import Kbd from '$lib/components/ui/kbd/kbd.svelte';
+	import { menuItems } from '../menu-items';
+	import { searchState } from '../search/search-state.svelte';
+	import User from './user.svelte';
+
+	const { data } = $props();
 </script>
 
 <Sidebar.Root variant="floating">
@@ -76,27 +77,7 @@
 	</Sidebar.Content>
 	<Sidebar.Footer>
 		<Sidebar.Menu>
-			<Sidebar.MenuItem>
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger class="w-full">
-						<Sidebar.MenuButton size="lg" class="cursor-pointer border shadow-xs">
-							<Avatar.Root>
-								<Avatar.Fallback>U</Avatar.Fallback>
-							</Avatar.Root>
-							Username
-							<ChevronUpIcon class="mr-1 ml-auto" />
-						</Sidebar.MenuButton>
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content align="end">
-						<DropdownMenu.Group>
-							<DropdownMenu.Label>My Account</DropdownMenu.Label>
-							<DropdownMenu.Separator />
-							<DropdownMenu.Item>Settings</DropdownMenu.Item>
-							<DropdownMenu.Item>Sign out</DropdownMenu.Item>
-						</DropdownMenu.Group>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
-			</Sidebar.MenuItem>
+			<User {data} />
 		</Sidebar.Menu>
 	</Sidebar.Footer>
 </Sidebar.Root>

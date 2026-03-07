@@ -1,14 +1,14 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import AppSidebar from '$lib/components/organizer/app-sidebar.svelte';
-	import SidebarToggle from '$lib/components/organizer/sidebar-toggle.svelte';
-	import Search from '$lib/components/organizer/search.svelte';
+	import AppSidebar from '$lib/components/organizer/sidebar/app-sidebar.svelte';
+	import SidebarToggle from '$lib/components/organizer/sidebar/sidebar-toggle.svelte';
+	import Search from '$lib/components/organizer/search/search.svelte';
 	import Hotkeys from '$lib/components/organizer/hotkeys.svelte';
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <Sidebar.Provider>
-	<AppSidebar />
+	<AppSidebar {data} />
 	<Search />
 	<Hotkeys />
 	<main class="pt-2 pl-2">

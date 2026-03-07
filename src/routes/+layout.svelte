@@ -9,11 +9,14 @@
 
 	import { authClient } from '$lib/auth-client';
 	import { ModeWatcher } from 'mode-watcher';
-	createSvelteAuthClient({ authClient });
+	import { Toaster } from '$lib/components/ui/sonner/index.js';
 
-	const { children } = $props();
+	const { children, data } = $props();
+
+	createSvelteAuthClient({ authClient, getServerState: () => data.authState });
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 <ModeWatcher />
+<Toaster />
 {@render children()}
