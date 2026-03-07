@@ -6,6 +6,8 @@
 	import type { FunctionReturnType } from 'convex/server';
 	import type { api } from '$convex/_generated/api';
 	import { authClient } from '$lib/auth-client';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
 
 	const {
 		data
@@ -32,7 +34,23 @@
 				<DropdownMenu.Label>My Account</DropdownMenu.Label>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item>Settings</DropdownMenu.Item>
-				<DropdownMenu.Item onclick={() => authClient.signOut()}>Sign out</DropdownMenu.Item>
+				<DropdownMenu.Item
+					onclick={() =>
+						toast.promise(
+							authClient.signOut().then(({ data, error }) => {
+								if (error) {
+									throw error;
+								}
+								goto('/');
+								return data;
+							}),
+							{
+								loading: 'Signing out...',
+								success: 'Signed out',
+								error: 'Something went wrong'
+							}
+						)}>Sign out</DropdownMenu.Item
+				>
 			</DropdownMenu.Group>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
