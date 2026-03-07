@@ -8,10 +8,13 @@
 	import { menuItems } from '../menu-items';
 	import { searchState } from '../search/search-state.svelte';
 	import User from './user.svelte';
+	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
 
 	import LogoIcon from '~icons/logos/icon';
 
 	const { data } = $props();
+
+	const sidebar = useSidebar();
 </script>
 
 <Sidebar.Root variant="floating">
@@ -22,7 +25,10 @@
 				<Button
 					variant="outline"
 					class="grow justify-start"
-					onclick={() => (searchState.open = !searchState.open)}
+					onclick={() => {
+						sidebar.setOpenMobile(false);
+						searchState.open = !searchState.open;
+					}}
 				>
 					<SearchIcon />
 					Search
@@ -32,7 +38,7 @@
 				</Button>
 			</Sidebar.MenuItem>
 			<Sidebar.MenuItem class="pt-2">
-				<Button variant="ghost" class="w-full border">
+				<Button variant="ghost" class="w-full border" onclick={() => {}}>
 					Event Name <ChevronDownIcon class="ml-auto" />
 				</Button>
 			</Sidebar.MenuItem>
@@ -52,6 +58,9 @@
 								{#snippet child({ props })}
 									{#if subItem.href}
 										<a
+											onclick={() => {
+												sidebar.setOpenMobile(false);
+											}}
 											href={subItem.href}
 											{...props}
 											class={cn(props.class || '', 'cursor-pointer')}
@@ -60,7 +69,10 @@
 										</a>
 									{:else}
 										<button
-											onclick={subItem.onClick}
+											onclick={() => {
+												sidebar.setOpenMobile(false);
+												if (subItem.onClick) subItem.onClick();
+											}}
 											{...props}
 											class={cn(props.class || '', 'cursor-pointer')}
 										>
