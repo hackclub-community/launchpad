@@ -31,7 +31,11 @@
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="end">
 			<DropdownMenu.Group>
-				<DropdownMenu.Label>My Account</DropdownMenu.Label>
+				<DropdownMenu.Label
+					>{data.currentUser?.name}
+					<br />
+					<span class="text-xs font-normal">{data.currentUser?.email}</span></DropdownMenu.Label
+				>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item>Settings</DropdownMenu.Item>
 				<DropdownMenu.Item
