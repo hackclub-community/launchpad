@@ -6,6 +6,7 @@
 	import { authClient } from '$lib/auth-client';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 	import { ArrowRight } from '@lucide/svelte';
+	import { toast } from 'svelte-sonner';
 
 	const auth = useAuth();
 	let loading = $state(false);
@@ -54,9 +55,27 @@
 		<Button
 			variant="ghost"
 			disabled={loading}
-			onclick={() => {
+			onclick={async () => {
 				loading = true;
-				authClient.signIn.oauth2({ providerId: 'hca', callbackURL: '/organizer' });
+				toast.promise(
+					authClient.signIn
+						.oauth2({
+							providerId: 'hca',
+							callbackURL: '/organizer'
+						})
+						.then(({ data, error }) => {
+							if (error) {
+								loading = false;
+								throw error;
+							}
+							return data;
+						}),
+					{
+						loading: 'Loading...',
+						success: 'Redirecting...',
+						error: 'Something went wrong'
+					}
+				);
 			}}
 		>
 			Log in as organizer
