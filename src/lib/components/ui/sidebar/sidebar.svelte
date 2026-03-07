@@ -34,17 +34,14 @@
 		{@render children?.()}
 	</div>
 {:else if sidebar.isMobile}
-	<Drawer.Root
-		direction={side}
-		bind:open={() => sidebar.openMobile, (v) => sidebar.setOpenMobile(v)}
-		{...restProps}
-	>
+	<Drawer.Root bind:open={() => sidebar.openMobile, (v) => sidebar.setOpenMobile(v)} {...restProps}>
 		<Drawer.Content
 			data-sidebar="sidebar"
 			data-slot="sidebar"
 			data-mobile="true"
-			class="m-2 w-(--sidebar-width) rounded-xl border bg-sidebar p-0 text-sidebar-foreground shadow-md after:hidden! [&>button]:hidden"
-			style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE}; --initial-transform: calc(100% + 12px)"
+			class="border bg-sidebar p-0 text-sidebar-foreground shadow-md after:hidden! [&>button]:hidden"
+			style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
+			
 		>
 			<Drawer.Header class="sr-only">
 				<Drawer.Title>Sidebar</Drawer.Title>
