@@ -17,7 +17,7 @@
 	const { id } = $props();
 </script>
 
-<div class="flex w-fit flex-col items-start gap-4">
+<div class="w-fit space-y-4">
 	<Card.Root class="w-fit min-w-md bg-card/75 backdrop-blur-lg">
 		{#if loginPage === 'participant'}
 			<Card.Header>
