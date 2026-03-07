@@ -12,8 +12,8 @@
 
 <div
 	class={cn(
-		'fixed top-4 left-4 z-50 flex flex-row items-center rounded-lg border bg-sidebar p-1 duration-200',
-		sidebar.open && 'border-transparent'
+		'fixed bottom-2 left-[50%] z-50 flex translate-x-[-50%] flex-row items-center rounded-lg border border-transparent bg-sidebar p-1 duration-200 md:top-4 md:bottom-auto md:left-4 md:translate-x-0',
+		(!sidebar.open || sidebar.isMobile) && 'border-border shadow-xs'
 	)}
 >
 	<Sidebar.Trigger />
