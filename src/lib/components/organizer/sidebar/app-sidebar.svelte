@@ -15,7 +15,7 @@
 <Sidebar.Root variant="floating">
 	<Sidebar.Header class="space-y-2">
 		<Sidebar.Menu>
-			<Sidebar.MenuItem class="flex h-9 flex-col justify-center rounded-full pl-12">
+			<Sidebar.MenuItem class="flex h-9 flex-col justify-center rounded-full md:pl-12">
 				<p class="text-xs">Launchpad</p>
 				<p>Event name</p>
 			</Sidebar.MenuItem>
