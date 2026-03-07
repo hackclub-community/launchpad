@@ -4,10 +4,12 @@
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronUpIcon } from '@lucide/svelte';
 	import type { FunctionReturnType } from 'convex/server';
-	import type { api } from '$convex/_generated/api';
+	import { api } from '$convex/_generated/api';
 	import { authClient } from '$lib/auth-client';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
+	import { useQuery } from 'convex-svelte';
+	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 
 	const {
 		data
@@ -16,6 +18,17 @@
 			currentUser: FunctionReturnType<typeof api.auth.getCurrentUser>;
 		};
 	} = $props();
+
+	const auth = useAuth();
+
+	const user = useQuery(
+		api.auth.getCurrentUser,
+		() => (auth.isAuthenticated ? {} : 'skip'),
+		() => ({
+			initialData: data.currentUser,
+			keepPreviousData: true
+		})
+	);
 </script>
 
 <Sidebar.MenuItem>
@@ -23,18 +36,18 @@
 		<DropdownMenu.Trigger class="w-full">
 			<Sidebar.MenuButton size="lg" class="cursor-pointer border shadow-xs">
 				<Avatar.Root>
-					<Avatar.Fallback>{data.currentUser?.name.charAt(0) || ''}</Avatar.Fallback>
+					<Avatar.Fallback>{user.data?.name?.charAt(0) || ''}</Avatar.Fallback>
 				</Avatar.Root>
-				{data.currentUser?.name}
+				{user.data?.name}
 				<ChevronUpIcon class="mr-1 ml-auto transition-transform in-data-[state=open]:rotate-180" />
 			</Sidebar.MenuButton>
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="end">
 			<DropdownMenu.Group>
 				<DropdownMenu.Label
-					>{data.currentUser?.name}
+					>{user.data?.name}
 					<br />
-					<span class="text-xs font-normal">{data.currentUser?.email}</span></DropdownMenu.Label
+					<span class="text-xs font-normal">{user.data?.email}</span></DropdownMenu.Label
 				>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item>Settings</DropdownMenu.Item>
