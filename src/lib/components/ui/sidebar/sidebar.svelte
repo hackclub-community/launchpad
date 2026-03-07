@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Sheet from '$lib/components/ui/sheet/index.js';
+	import * as Drawer from '$lib/components/ui/drawer/index.js';
 	import { cn, type WithElementRef } from '$lib/utils.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { SIDEBAR_WIDTH_MOBILE } from './constants.js';
@@ -14,7 +14,7 @@
 		children,
 		...restProps
 	}: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
-		side?: 'left' | 'right';
+		side?: 'left' | 'right' | 'left' | 'right';
 		variant?: 'sidebar' | 'floating' | 'inset';
 		collapsible?: 'offcanvas' | 'icon' | 'none';
 	} = $props();
@@ -34,24 +34,27 @@
 		{@render children?.()}
 	</div>
 {:else if sidebar.isMobile}
-	<Sheet.Root bind:open={() => sidebar.openMobile, (v) => sidebar.setOpenMobile(v)} {...restProps}>
-		<Sheet.Content
+	<Drawer.Root
+		direction={side}
+		bind:open={() => sidebar.openMobile, (v) => sidebar.setOpenMobile(v)}
+		{...restProps}
+	>
+		<Drawer.Content
 			data-sidebar="sidebar"
 			data-slot="sidebar"
 			data-mobile="true"
 			class="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
 			style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
-			{side}
 		>
-			<Sheet.Header class="sr-only">
-				<Sheet.Title>Sidebar</Sheet.Title>
-				<Sheet.Description>Displays the mobile sidebar.</Sheet.Description>
-			</Sheet.Header>
+			<Drawer.Header class="sr-only">
+				<Drawer.Title>Sidebar</Drawer.Title>
+				<Drawer.Description>Displays the mobile sidebar.</Drawer.Description>
+			</Drawer.Header>
 			<div class="flex h-full w-full flex-col">
 				{@render children?.()}
 			</div>
-		</Sheet.Content>
-	</Sheet.Root>
+		</Drawer.Content>
+	</Drawer.Root>
 {:else}
 	<div
 		bind:this={ref}
