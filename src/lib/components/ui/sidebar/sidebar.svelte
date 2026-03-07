@@ -43,8 +43,8 @@
 			data-sidebar="sidebar"
 			data-slot="sidebar"
 			data-mobile="true"
-			class="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
-			style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
+			class="m-2 w-(--sidebar-width) rounded-xl border bg-sidebar p-0 text-sidebar-foreground shadow-md after:hidden! [&>button]:hidden"
+			style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE}; --initial-transform: calc(100% + 12px)"
 		>
 			<Drawer.Header class="sr-only">
 				<Drawer.Title>Sidebar</Drawer.Title>
