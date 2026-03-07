@@ -5,6 +5,7 @@
 	import { ChevronUpIcon } from '@lucide/svelte';
 	import type { FunctionReturnType } from 'convex/server';
 	import type { api } from '$convex/_generated/api';
+	import { authClient } from '$lib/auth-client';
 
 	const {
 		data
@@ -31,7 +32,7 @@
 				<DropdownMenu.Label>My Account</DropdownMenu.Label>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item>Settings</DropdownMenu.Item>
-				<DropdownMenu.Item>Sign out</DropdownMenu.Item>
+				<DropdownMenu.Item onclick={() => authClient.signOut()}>Sign out</DropdownMenu.Item>
 			</DropdownMenu.Group>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
