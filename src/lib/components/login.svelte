@@ -46,7 +46,7 @@
 			<Card.Header>
 				<Card.Title>Log in as an organizer</Card.Title>
 			</Card.Header>
-			<Card.Content class="space-y-4">
+			<Card.Content class="space-y-8">
 				<Button
 					disabled={loading}
 					onclick={async () => {
