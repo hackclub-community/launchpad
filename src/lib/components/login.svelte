@@ -12,7 +12,7 @@
 
 	const auth = useAuth();
 	let loading = $state(false);
-	let loginPage = $state<'participant' | 'organizer'>('organizer');
+	let loginPage = $state<'participant' | 'organizer'>('participant');
 
 	const { id } = $props();
 </script>
