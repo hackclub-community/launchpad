@@ -15,22 +15,20 @@
 <Sidebar.Root variant="floating">
 	<Sidebar.Header class="space-y-2">
 		<Sidebar.Menu>
-			<Sidebar.MenuItem class="flex h-9 flex-col justify-center rounded-full md:pl-12">
-				<p class="text-xs">Launchpad</p>
-				<p>Event name</p>
+			<Sidebar.MenuItem class="flex h-9 flex-col justify-center rounded-full md:pl-10">
+				<Button
+					variant="outline"
+					class="justify-start"
+					onclick={() => (searchState.open = !searchState.open)}
+				>
+					<SearchIcon />
+					Search
+					<KbdGroup class="ml-auto">
+						<Kbd>⌘</Kbd><Kbd>K</Kbd>
+					</KbdGroup>
+				</Button>
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
-		<Button
-			variant="outline"
-			class="justify-start"
-			onclick={() => (searchState.open = !searchState.open)}
-		>
-			<SearchIcon />
-			Search
-			<KbdGroup class="ml-auto">
-				<Kbd>⌘</Kbd><Kbd>K</Kbd>
-			</KbdGroup>
-		</Button>
 	</Sidebar.Header>
 
 	<Sidebar.Content>
