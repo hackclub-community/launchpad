@@ -9,6 +9,7 @@
 	import { searchState } from '../search/search-state.svelte';
 	import User from './user.svelte';
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
+	import { page } from '$app/state';
 
 	import LogoIcon from '~icons/logos/icon';
 
@@ -62,7 +63,7 @@
 				<Sidebar.GroupContent>
 					{#each item.items as subItem, j (j)}
 						<Sidebar.MenuItem>
-							<Sidebar.MenuButton>
+							<Sidebar.MenuButton isActive={subItem.href === page.url.pathname}>
 								{#snippet child({ props })}
 									{#if subItem.href}
 										<a
