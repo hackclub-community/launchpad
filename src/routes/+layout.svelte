@@ -10,6 +10,7 @@
 	import { authClient } from '$lib/auth-client';
 	import { ModeWatcher } from 'mode-watcher';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
+	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
 
 	const { children, data } = $props();
 
@@ -19,4 +20,6 @@
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 <ModeWatcher />
 <Toaster />
-{@render children()}
+<Tooltip.Provider>
+	{@render children()}
+</Tooltip.Provider>
