@@ -6,6 +6,7 @@
 	import { slide } from 'svelte/transition';
 	import { SearchIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils';
+	import { searchState } from '../search/search-state.svelte';
 
 	const sidebar = useSidebar();
 </script>
@@ -23,7 +24,9 @@
 			out:slide={{ axis: 'x', duration: 100, easing: cubicOut }}
 			class="flex gap-1 rounded-full px-1"
 		>
-			<Badge><SearchIcon /> Search</Badge>
+			<Badge class="cursor-pointer" onclick={() => (searchState.open = true)}>
+				<SearchIcon /> Search
+			</Badge>
 			<Badge variant="outline">Event name</Badge>
 		</div>
 	{/if}
