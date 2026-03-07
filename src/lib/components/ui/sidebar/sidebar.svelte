@@ -36,12 +36,12 @@
 {:else if sidebar.isMobile}
 	<Drawer.Root bind:open={() => sidebar.openMobile, (v) => sidebar.setOpenMobile(v)} {...restProps}>
 		<Drawer.Content
+			handle={false}
 			data-sidebar="sidebar"
 			data-slot="sidebar"
 			data-mobile="true"
-			class="border bg-sidebar p-0 text-sidebar-foreground shadow-md after:hidden! [&>button]:hidden"
+			class="bg-sidebar p-2 text-sidebar-foreground"
 			style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
-			
 		>
 			<Drawer.Header class="sr-only">
 				<Drawer.Title>Sidebar</Drawer.Title>
