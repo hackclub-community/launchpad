@@ -14,7 +14,7 @@
 	let loading = $state(false);
 	let loginPage = $state<'participant' | 'organizer'>('participant');
 
-	const { id } = $props();
+	const id = $props.id();
 </script>
 
 <div class="w-fit space-y-4">
