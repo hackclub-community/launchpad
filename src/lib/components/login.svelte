@@ -72,18 +72,24 @@
 						);
 					}}>Continue with Hack Club</Button
 				>
-				<div class="flex w-full flex-col gap-2">
+				<form class="flex w-full flex-col gap-2">
 					<Label for="email-{id}">Email</Label>
 					<InputGroup.Root class="w-full">
-						<InputGroup.Input type="email" id="email-{id}" placeholder="iwill@hackthisclub.com" />
+						<InputGroup.Input
+							type="email"
+							name="email"
+							id="email-{id}"
+							required
+							placeholder="iwill@hackthisclub.com"
+						/>
 						<InputGroup.Addon align="inline-end">
-							<InputGroup.Button variant="default">
+							<InputGroup.Button variant="default" type="submit">
 								<ArrowRightIcon />
 								Send Code
 							</InputGroup.Button>
 						</InputGroup.Addon>
 					</InputGroup.Root>
-				</div>
+				</form>
 			</Card.Content>
 		{/if}
 	</Card.Root>
