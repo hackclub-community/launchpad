@@ -3,6 +3,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import { enhancedImages } from '@sveltejs/enhanced-img';
 import Icons from 'unplugin-icons/vite';
+import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
 export default defineConfig({
 	plugins: [
@@ -10,7 +11,10 @@ export default defineConfig({
 		sveltekit(),
 		enhancedImages(),
 		Icons({
-			compiler: 'svelte'
+			compiler: 'svelte',
+			customCollections: {
+				logos: FileSystemIconLoader('./src/lib/assets/logos')
+			}
 		})
 	]
 });
