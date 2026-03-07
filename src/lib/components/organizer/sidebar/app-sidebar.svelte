@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import { ArrowDownIcon, ChevronDownIcon, SearchIcon } from '@lucide/svelte';
+	import { ChevronDownIcon, SearchIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import KbdGroup from '$lib/components/ui/kbd/kbd-group.svelte';
