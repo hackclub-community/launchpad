@@ -26,7 +26,7 @@
 					<Avatar.Fallback>{data.currentUser?.name.charAt(0) || ''}</Avatar.Fallback>
 				</Avatar.Root>
 				{data.currentUser?.name}
-				<ChevronUpIcon class="mr-1 ml-auto" />
+				<ChevronUpIcon class="mr-1 ml-auto transition-transform in-data-[state=open]:rotate-180" />
 			</Sidebar.MenuButton>
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="end">
