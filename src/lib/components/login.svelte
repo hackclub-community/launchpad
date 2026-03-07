@@ -18,8 +18,8 @@
 </script>
 
 <div class="flex w-fit flex-col items-start gap-4">
-	{#if loginPage === 'participant'}
-		<Card.Root class="w-fit min-w-md bg-card/75 backdrop-blur-lg">
+	<Card.Root class="w-fit min-w-md bg-card/75 backdrop-blur-lg">
+		{#if loginPage === 'participant'}
 			<Card.Header>
 				<Card.Title>Enter your attendee code</Card.Title>
 				<Card.Description>You should have been provided this code by an organizer.</Card.Description
@@ -42,9 +42,7 @@
 					{/snippet}
 				</InputOTP.Root>
 			</Card.Content>
-		</Card.Root>
-	{:else}
-		<Card.Root class="w-fit min-w-md bg-card/75 backdrop-blur-lg">
+		{:else}
 			<Card.Header>
 				<Card.Title>Log in as an organizer</Card.Title>
 			</Card.Header>
@@ -87,8 +85,8 @@
 					</InputGroup.Root>
 				</div>
 			</Card.Content>
-		</Card.Root>
-	{/if}
+		{/if}
+	</Card.Root>
 
 	{#if auth.isLoading}
 		<!-- Auth should never load because its preloaded on server -->
