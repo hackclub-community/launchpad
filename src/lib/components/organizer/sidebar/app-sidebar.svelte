@@ -9,16 +9,19 @@
 	import { searchState } from '../search/search-state.svelte';
 	import User from './user.svelte';
 
+	import LogoIcon from '~icons/logos/icon';
+
 	const { data } = $props();
 </script>
 
 <Sidebar.Root variant="floating">
 	<Sidebar.Header class="space-y-2">
 		<Sidebar.Menu>
-			<Sidebar.MenuItem class="flex h-9 flex-col justify-center rounded-full md:pl-10">
+			<Sidebar.MenuItem class="flex h-9 items-center gap-2 rounded-full md:pl-10">
+				<LogoIcon class="size-10" />
 				<Button
 					variant="outline"
-					class="justify-start"
+					class="grow justify-start"
 					onclick={() => (searchState.open = !searchState.open)}
 				>
 					<SearchIcon />
