@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import { ChevronDownIcon, SearchIcon } from '@lucide/svelte';
+	import { ChevronDownIcon, SearchIcon, XIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import KbdGroup from '$lib/components/ui/kbd/kbd-group.svelte';
@@ -35,6 +35,14 @@
 					<KbdGroup class="ml-auto">
 						<Kbd>⌘</Kbd><Kbd>K</Kbd>
 					</KbdGroup>
+				</Button>
+				<Button
+					variant="outline"
+					size="icon"
+					onclick={() => sidebar.setOpenMobile(false)}
+					class="flex md:hidden"
+				>
+					<XIcon />
 				</Button>
 			</Sidebar.MenuItem>
 			<Sidebar.MenuItem class="pt-2">
