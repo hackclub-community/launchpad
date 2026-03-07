@@ -4,7 +4,7 @@
 </script>
 
 <div
-	class="relative z-10 flex h-screen w-full items-center justify-start bg-linear-to-r from-background/75 to-transparent px-10"
+	class="relative z-10 flex h-dvh w-full items-center justify-start bg-linear-to-r from-background/75 to-transparent px-4 sm:px-10"
 >
 	<Login />
 </div>

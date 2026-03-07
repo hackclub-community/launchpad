@@ -17,8 +17,8 @@
 	const id = $props.id();
 </script>
 
-<div class="w-fit space-y-4">
-	<Card.Root class="w-fit min-w-md bg-card/75 backdrop-blur-lg">
+<div class="w-full space-y-4">
+	<Card.Root class="w-full bg-card/75 backdrop-blur-lg sm:max-w-md sm:min-w-md">
 		{#if loginPage === 'participant'}
 			<Card.Header>
 				<Card.Title>Enter your attendee code</Card.Title>
