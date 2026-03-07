@@ -5,10 +5,10 @@
 	import Button from './ui/button/button.svelte';
 	import { authClient } from '$lib/auth-client';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
-	import { ArrowRight } from '@lucide/svelte';
+	import { ArrowRight, ArrowRightIcon } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
-	import Input from './ui/input/input.svelte';
 	import Label from './ui/label/label.svelte';
+	import * as InputGroup from '$lib/components/ui/input-group/index.js';
 
 	const auth = useAuth();
 	let loading = $state(false);
@@ -74,9 +74,17 @@
 						);
 					}}>Continue with Hack Club</Button
 				>
-				<div class="flex w-full max-w-sm flex-col gap-2">
+				<div class="flex w-full flex-col gap-2">
 					<Label for="email-{id}">Email</Label>
-					<Input type="email" id="email-{id}" placeholder="iwill@hackthisclub.com" />
+					<InputGroup.Root class="w-full">
+						<InputGroup.Input type="email" id="email-{id}" placeholder="iwill@hackthisclub.com" />
+						<InputGroup.Addon align="inline-end">
+							<InputGroup.Button variant="default">
+								<ArrowRightIcon />
+								Send Code
+							</InputGroup.Button>
+						</InputGroup.Addon>
+					</InputGroup.Root>
 				</div>
 			</Card.Content>
 		</Card.Root>
