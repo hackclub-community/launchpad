@@ -34,7 +34,7 @@
 					<SearchIcon />
 					Search
 					<KbdGroup class="ml-auto">
-						<Kbd>⌘</Kbd><Kbd>K</Kbd>
+						<Kbd>Ctrl</Kbd><Kbd>K</Kbd>
 					</KbdGroup>
 				</Button>
 				<Button
