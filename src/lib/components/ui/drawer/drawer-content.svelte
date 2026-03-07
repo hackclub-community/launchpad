@@ -15,7 +15,7 @@
 		...restProps
 	}: DrawerPrimitive.ContentProps & {
 		portalProps?: WithoutChildrenOrChild<ComponentProps<typeof DrawerPortal>>;
-	} & { handle: boolean } = $props();
+	} & { handle?: boolean } = $props();
 </script>
 
 <DrawerPortal {...portalProps}>
