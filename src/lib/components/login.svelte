@@ -100,7 +100,7 @@
 	{:else if auth.isAuthenticated}
 		<Item.Root
 			variant="outline"
-			class="w-full rounded-xl bg-linear-to-l from-border/75 to-card/75 backdrop-blur-lg"
+			class="w-full rounded-xl bg-linear-to-l from-border/75 to-card/75 backdrop-blur-lg sm:max-w-md sm:min-w-md"
 		>
 			<Item.Content>
 				<Item.Title>You're already logged in as an organizer!</Item.Title>
