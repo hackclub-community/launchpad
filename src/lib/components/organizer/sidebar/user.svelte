@@ -3,7 +3,7 @@
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import { ChevronUpIcon } from '@lucide/svelte';
+	import { ChevronUpIcon, LogOutIcon, SettingsIcon } from '@lucide/svelte';
 	import type { FunctionReturnType } from 'convex/server';
 	import { api } from '$convex/_generated/api';
 	import { authClient } from '$lib/auth-client';
@@ -60,8 +60,14 @@
 					</Drawer.Description>
 				</Drawer.Header>
 				<Drawer.Footer class="grid grid-cols-2">
-					<Button>Settings</Button>
-					<Button>Sign out</Button>
+					<Button class="h-20 flex-col" variant="outline">
+						<SettingsIcon />
+						Settings
+					</Button>
+					<Button class="h-20 flex-col" variant="outline">
+						<LogOutIcon />
+						Sign out
+					</Button>
 				</Drawer.Footer>
 			</Drawer.Content>
 		</Drawer.Root>
