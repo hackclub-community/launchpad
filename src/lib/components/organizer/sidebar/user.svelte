@@ -127,7 +127,7 @@
 	<Sidebar.MenuButton
 		size="lg"
 		{...props}
-		class={cn('cursor-pointer border shadow-xs' + props.class)}
+		class={cn('cursor-pointer border shadow-xs', props.class)}
 	>
 		<Avatar.Root>
 			<Avatar.Fallback>{user.data?.name?.charAt(0) || ''}</Avatar.Fallback>
