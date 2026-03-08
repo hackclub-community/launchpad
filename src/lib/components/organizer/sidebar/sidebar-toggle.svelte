@@ -6,24 +6,40 @@
 	import { slide } from 'svelte/transition';
 	import { SearchIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils';
+	import { searchState } from '../search/search-state.svelte';
+	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
+	import { Kbd, KbdGroup } from '$lib/components/ui/kbd';
 
 	const sidebar = useSidebar();
 </script>
 
 <div
 	class={cn(
-		'fixed top-4 left-4 z-50 flex flex-row items-center rounded-lg border bg-sidebar p-1 duration-200',
-		sidebar.open && 'border-transparent'
+		'fixed bottom-2 left-[50%] z-50 flex translate-x-[-50%] flex-row items-center rounded-lg border border-transparent bg-sidebar p-1 duration-200 md:top-4 md:bottom-auto md:left-4 md:translate-x-0',
+		(!sidebar.open || sidebar.isMobile) && 'border-border shadow-xs'
 	)}
 >
-	<Sidebar.Trigger />
-	{#if !sidebar.open}
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<Sidebar.Trigger />
+		</Tooltip.Trigger>
+		<Tooltip.Content collisionPadding={16}>
+			<KbdGroup>
+				Toggle sidebar
+				<Kbd>Ctrl</Kbd>
+				<Kbd>B</Kbd>
+			</KbdGroup>
+		</Tooltip.Content>
+	</Tooltip.Root>
+	{#if !sidebar.open || sidebar.isMobile}
 		<div
 			in:slide={{ axis: 'x', duration: 100, easing: cubicOut, delay: 150 }}
 			out:slide={{ axis: 'x', duration: 100, easing: cubicOut }}
 			class="flex gap-1 rounded-full px-1"
 		>
-			<Badge><SearchIcon /> Search</Badge>
+			<Badge class="cursor-pointer" onclick={() => (searchState.open = true)}>
+				<SearchIcon /> Search
+			</Badge>
 			<Badge variant="outline">Event name</Badge>
 		</div>
 	{/if}

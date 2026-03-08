@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import { SearchIcon } from '@lucide/svelte';
+	import { ChevronDownIcon, SearchIcon, XIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import KbdGroup from '$lib/components/ui/kbd/kbd-group.svelte';
@@ -8,29 +8,50 @@
 	import { menuItems } from '../menu-items';
 	import { searchState } from '../search/search-state.svelte';
 	import User from './user.svelte';
+	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
+	import { page } from '$app/state';
+
+	import LogoIcon from '~icons/logos/icon';
 
 	const { data } = $props();
+
+	const sidebar = useSidebar();
 </script>
 
 <Sidebar.Root variant="floating">
 	<Sidebar.Header class="space-y-2">
 		<Sidebar.Menu>
-			<Sidebar.MenuItem class="flex h-9 flex-col justify-center rounded-full bg-card pl-12">
-				<p class="text-xs">Launchpad</p>
-				<p>Event name</p>
+			<Sidebar.MenuItem class="flex h-9 items-center gap-2 rounded-full md:pl-10">
+				<LogoIcon class="size-10" />
+				<Button
+					variant="outline"
+					class="grow justify-start"
+					onclick={() => {
+						sidebar.setOpenMobile(false);
+						searchState.open = !searchState.open;
+					}}
+				>
+					<SearchIcon />
+					Search
+					<KbdGroup class="ml-auto">
+						<Kbd>Ctrl</Kbd><Kbd>K</Kbd>
+					</KbdGroup>
+				</Button>
+				<Button
+					variant="outline"
+					size="icon"
+					onclick={() => sidebar.setOpenMobile(false)}
+					class="flex md:hidden"
+				>
+					<XIcon />
+				</Button>
+			</Sidebar.MenuItem>
+			<Sidebar.MenuItem class="pt-2">
+				<Button variant="ghost" class="w-full border">
+					Event Name <ChevronDownIcon class="ml-auto" />
+				</Button>
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
-		<Button
-			variant="outline"
-			class="justify-start"
-			onclick={() => (searchState.open = !searchState.open)}
-		>
-			<SearchIcon />
-			Search
-			<KbdGroup class="ml-auto">
-				<Kbd>⌘</Kbd><Kbd>K</Kbd>
-			</KbdGroup>
-		</Button>
 	</Sidebar.Header>
 
 	<Sidebar.Content>
@@ -42,10 +63,13 @@
 				<Sidebar.GroupContent>
 					{#each item.items as subItem, j (j)}
 						<Sidebar.MenuItem>
-							<Sidebar.MenuButton>
+							<Sidebar.MenuButton isActive={subItem.href === page.url.pathname}>
 								{#snippet child({ props })}
 									{#if subItem.href}
 										<a
+											onclick={() => {
+												sidebar.setOpenMobile(false);
+											}}
 											href={subItem.href}
 											{...props}
 											class={cn(props.class || '', 'cursor-pointer')}
@@ -54,7 +78,10 @@
 										</a>
 									{:else}
 										<button
-											onclick={subItem.onClick}
+											onclick={() => {
+												sidebar.setOpenMobile(false);
+												if (subItem.onClick) subItem.onClick();
+											}}
 											{...props}
 											class={cn(props.class || '', 'cursor-pointer')}
 										>
