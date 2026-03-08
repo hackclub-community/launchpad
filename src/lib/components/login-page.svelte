@@ -16,5 +16,6 @@
 		img.style.opacity = '1';
 	}}
 	src={crowdImage}
+	alt="Crowd at Assemble - Summer 2022"
 	class="fixed top-0 left-0 h-full w-full object-cover opacity-0 duration-500"
 />
