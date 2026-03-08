@@ -46,7 +46,9 @@
 		{
 			text: 'Settings',
 			icon: SettingsIcon,
-			onClick: () => {}
+			onClick: () => {
+				accountDialogOpen = true;
+			}
 		},
 		{
 			text: 'Sign out',
