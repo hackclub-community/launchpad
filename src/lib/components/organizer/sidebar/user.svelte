@@ -14,6 +14,7 @@
 	import { cn } from '$lib/utils';
 	import { type ComponentProps } from 'svelte';
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	const {
 		data
@@ -49,7 +50,20 @@
 			}
 		})}
 		<Drawer.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
-			<Drawer.Content></Drawer.Content>
+			<Drawer.Content>
+				<Drawer.Header>
+					<Drawer.Title>
+						{user.data?.name}
+					</Drawer.Title>
+					<Drawer.Description>
+						{user.data?.email}
+					</Drawer.Description>
+				</Drawer.Header>
+				<Drawer.Footer class="grid grid-cols-2">
+					<Button>Settings</Button>
+					<Button>Sign out</Button>
+				</Drawer.Footer>
+			</Drawer.Content>
 		</Drawer.Root>
 	{:else}
 		<DropdownMenu.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
