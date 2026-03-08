@@ -60,11 +60,11 @@
 					</Drawer.Description>
 				</Drawer.Header>
 				<Drawer.Footer class="grid grid-cols-2">
-					<Button class="h-20 flex-col" variant="outline">
+					<Button class="h-24 flex-col" variant="outline">
 						<SettingsIcon />
 						Settings
 					</Button>
-					<Button class="h-20 flex-col" variant="outline">
+					<Button class="h-24 flex-col" variant="outline">
 						<LogOutIcon />
 						Sign out
 					</Button>
