@@ -13,9 +13,9 @@
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 	import { cn } from '$lib/utils';
 	import { type ComponentProps } from 'svelte';
-	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
 	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui';
+	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
 
 	const {
 		data
@@ -36,7 +36,7 @@
 		})
 	);
 
-	const isMobile = new IsMobile();
+	const sidebar = useSidebar();
 
 	let accountMenuOpen = $state(false);
 
@@ -70,7 +70,7 @@
 </script>
 
 <Sidebar.MenuItem>
-	{#if isMobile.current}
+	{#if sidebar.isMobile}
 		{@render menuButton({
 			props: {
 				onclick: () => {
