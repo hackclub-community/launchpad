@@ -24,11 +24,7 @@
 	<Dialog.Root bind:open>
 		<Dialog.Content>
 			<Dialog.Header>
-				<Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
-				<Dialog.Description>
-					This action cannot be undone. This will permanently delete your account and remove your
-					data from our servers.
-				</Dialog.Description>
+				<Dialog.Title>Account Settings</Dialog.Title>
 			</Dialog.Header>
 		</Dialog.Content>
 	</Dialog.Root>
