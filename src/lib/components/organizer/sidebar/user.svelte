@@ -11,6 +11,7 @@
 	import { useQuery } from 'convex-svelte';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 	import { cn } from '$lib/utils';
+	import { ComponentProps } from 'svelte';
 
 	const {
 		data
@@ -38,19 +39,7 @@
 	<DropdownMenu.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
 		<DropdownMenu.Trigger class="w-full">
 			{#snippet child({ props })}
-				<Sidebar.MenuButton
-					size="lg"
-					{...props}
-					class={cn('cursor-pointer border shadow-xs' + props.class)}
-				>
-					<Avatar.Root>
-						<Avatar.Fallback>{user.data?.name?.charAt(0) || ''}</Avatar.Fallback>
-					</Avatar.Root>
-					{user.data?.name}
-					<ChevronUpIcon
-						class="mr-1 ml-auto transition-transform in-data-[state=open]:rotate-180"
-					/>
-				</Sidebar.MenuButton>
+				{@render menuButton({ props })}
 			{/snippet}
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="end">
@@ -83,3 +72,17 @@
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 </Sidebar.MenuItem>
+
+{#snippet menuButton({ props }: { props: ComponentProps<typeof Sidebar.MenuButton> })}
+	<Sidebar.MenuButton
+		size="lg"
+		{...props}
+		class={cn('cursor-pointer border shadow-xs' + props.class)}
+	>
+		<Avatar.Root>
+			<Avatar.Fallback>{user.data?.name?.charAt(0) || ''}</Avatar.Fallback>
+		</Avatar.Root>
+		{user.data?.name}
+		<ChevronUpIcon class="mr-1 ml-auto transition-transform in-data-[state=open]:rotate-180" />
+	</Sidebar.MenuButton>
+{/snippet}
