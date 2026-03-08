@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import * as Drawer from '$lib/components/ui/drawer/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronUpIcon } from '@lucide/svelte';
@@ -39,7 +40,18 @@
 </script>
 
 <Sidebar.MenuItem>
-	{#if isMobile.current}{:else}
+	{#if isMobile.current}
+		{@render menuButton({
+			props: {
+				onclick: () => {
+					accountMenuOpen = true;
+				}
+			}
+		})}
+		<Drawer.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
+			<Drawer.Content></Drawer.Content>
+		</Drawer.Root>
+	{:else}
 		<DropdownMenu.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
 			<DropdownMenu.Trigger class="w-full">
 				{#snippet child({ props })}
