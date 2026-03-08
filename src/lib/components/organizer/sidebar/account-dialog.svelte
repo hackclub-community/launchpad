@@ -5,7 +5,6 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger>Open</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
