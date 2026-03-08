@@ -14,7 +14,8 @@
 	import { cn } from '$lib/utils';
 	import { type ComponentProps } from 'svelte';
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
-	import Button from '$lib/components/ui/button/button.svelte';
+	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
+	import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui';
 
 	const {
 		data
@@ -104,19 +105,23 @@
 					{@render menuButton({ props })}
 				{/snippet}
 			</DropdownMenu.Trigger>
-			<DropdownMenu.Content align="end">
+			<DropdownMenu.Content align="end" class="p-2">
 				<DropdownMenu.Group>
-					<DropdownMenu.Label
-						>{user.data?.name}
+					<div class="px-2 pb-2">
+						{user.data?.name}
 						<br />
-						<span class="text-xs font-normal">{user.data?.email}</span></DropdownMenu.Label
-					>
-					<DropdownMenu.Separator />
-					{#each actions as action (action.text)}
-						<DropdownMenu.Item onclick={action.onClick}
-							><action.icon />{action.text}</DropdownMenu.Item
-						>
-					{/each}
+						<span class="text-xs font-normal">{user.data?.email}</span>
+					</div>
+					<div class="grid w-52 grid-cols-2 gap-2">
+						{#each actions as action (action.text)}
+							<DropdownMenuPrimitive.Item
+								onclick={action.onClick}
+								class={cn(buttonVariants({ variant: 'outline' }), 'h-fit flex-col rounded-sm py-4')}
+							>
+								<action.icon />{action.text}
+							</DropdownMenuPrimitive.Item>
+						{/each}
+					</div>
 				</DropdownMenu.Group>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
