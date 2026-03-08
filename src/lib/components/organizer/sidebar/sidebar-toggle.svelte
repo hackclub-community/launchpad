@@ -19,20 +19,24 @@
 		(!sidebar.open || sidebar.isMobile) && 'border-border shadow-xs'
 	)}
 >
-	<Tooltip.Root>
-		<Tooltip.Trigger>
-			{#snippet child({ props })}
-				<Sidebar.Trigger {...props} />
-			{/snippet}
-		</Tooltip.Trigger>
-		<Tooltip.Content collisionPadding={16}>
-			<KbdGroup>
-				Toggle sidebar
-				<Kbd>Ctrl</Kbd>
-				<Kbd>B</Kbd>
-			</KbdGroup>
-		</Tooltip.Content>
-	</Tooltip.Root>
+	{#if sidebar.isMobile}
+		<Sidebar.Trigger />
+	{:else}
+		<Tooltip.Root>
+			<Tooltip.Trigger>
+				{#snippet child({ props })}
+					<Sidebar.Trigger {...props} />
+				{/snippet}
+			</Tooltip.Trigger>
+			<Tooltip.Content collisionPadding={16}>
+				<KbdGroup>
+					Toggle sidebar
+					<Kbd>Ctrl</Kbd>
+					<Kbd>B</Kbd>
+				</KbdGroup>
+			</Tooltip.Content>
+		</Tooltip.Root>
+	{/if}
 	{#if !sidebar.open || sidebar.isMobile}
 		<div
 			in:slide={{ axis: 'x', duration: 100, easing: cubicOut, delay: 150 }}
