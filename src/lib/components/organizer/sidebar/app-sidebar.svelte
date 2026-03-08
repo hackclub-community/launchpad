@@ -47,7 +47,7 @@
 				</Button>
 			</Sidebar.MenuItem>
 			<Sidebar.MenuItem class="pt-2">
-				<Button variant="ghost" class="w-full border" onclick={() => {}}>
+				<Button variant="ghost" class="w-full border">
 					Event Name <ChevronDownIcon class="ml-auto" />
 				</Button>
 			</Sidebar.MenuItem>
