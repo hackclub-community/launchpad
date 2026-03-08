@@ -10,6 +10,7 @@
 	import { goto } from '$app/navigation';
 	import { useQuery } from 'convex-svelte';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
+	import { cn } from '$lib/utils';
 
 	const {
 		data
@@ -34,13 +35,21 @@
 <Sidebar.MenuItem>
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger class="w-full">
-			<Sidebar.MenuButton size="lg" class="cursor-pointer border shadow-xs">
-				<Avatar.Root>
-					<Avatar.Fallback>{user.data?.name?.charAt(0) || ''}</Avatar.Fallback>
-				</Avatar.Root>
-				{user.data?.name}
-				<ChevronUpIcon class="mr-1 ml-auto transition-transform in-data-[state=open]:rotate-180" />
-			</Sidebar.MenuButton>
+			{#snippet child({ props })}
+				<Sidebar.MenuButton
+					size="lg"
+					{...props}
+					class={cn('cursor-pointer border shadow-xs' + props.class)}
+				>
+					<Avatar.Root>
+						<Avatar.Fallback>{user.data?.name?.charAt(0) || ''}</Avatar.Fallback>
+					</Avatar.Root>
+					{user.data?.name}
+					<ChevronUpIcon
+						class="mr-1 ml-auto transition-transform in-data-[state=open]:rotate-180"
+					/>
+				</Sidebar.MenuButton>
+			{/snippet}
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="end">
 			<DropdownMenu.Group>
