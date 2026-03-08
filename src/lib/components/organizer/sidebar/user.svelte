@@ -16,6 +16,7 @@
 	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui';
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
+	import AccountDialog from './account-dialog.svelte';
 
 	const {
 		data
@@ -39,6 +40,7 @@
 	const sidebar = useSidebar();
 
 	let accountMenuOpen = $state(false);
+	let accountDialogOpen = $state(false);
 
 	const actions = [
 		{
@@ -127,6 +129,7 @@
 		</DropdownMenu.Root>
 	{/if}
 </Sidebar.MenuItem>
+<AccountDialog bind:open={accountDialogOpen} />
 
 {#snippet menuButton({ props }: { props: ComponentProps<typeof Sidebar.MenuButton> })}
 	<Sidebar.MenuButton
