@@ -11,7 +11,7 @@
 	import { useQuery } from 'convex-svelte';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 	import { cn } from '$lib/utils';
-	import { ComponentProps } from 'svelte';
+	import { type ComponentProps } from 'svelte';
 
 	const {
 		data
