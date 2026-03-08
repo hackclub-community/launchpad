@@ -38,6 +38,34 @@
 	const isMobile = new IsMobile();
 
 	let accountMenuOpen = $state(false);
+
+	const actions = [
+		{
+			text: 'Settings',
+			icon: SettingsIcon,
+			onClick: () => {}
+		},
+		{
+			text: 'Sign out',
+			icon: LogOutIcon,
+			onClick: () => {
+				toast.promise(
+					authClient.signOut().then(({ data, error }) => {
+						if (error) {
+							throw error;
+						}
+						goto('/');
+						return data;
+					}),
+					{
+						loading: 'Signing out...',
+						success: 'Signed out',
+						error: 'Something went wrong'
+					}
+				);
+			}
+		}
+	];
 </script>
 
 <Sidebar.MenuItem>
@@ -60,14 +88,12 @@
 					</Drawer.Description>
 				</Drawer.Header>
 				<Drawer.Footer class="grid grid-cols-2">
-					<Button class="h-24 flex-col" variant="outline">
-						<SettingsIcon />
-						Settings
-					</Button>
-					<Button class="h-24 flex-col" variant="outline">
-						<LogOutIcon />
-						Sign out
-					</Button>
+					{#each actions as action (action.text)}
+						<Button class="h-24 flex-col" variant="outline" onclick={action.onClick}>
+							<action.icon />
+							{action.text}
+						</Button>
+					{/each}
 				</Drawer.Footer>
 			</Drawer.Content>
 		</Drawer.Root>
@@ -86,24 +112,11 @@
 						<span class="text-xs font-normal">{user.data?.email}</span></DropdownMenu.Label
 					>
 					<DropdownMenu.Separator />
-					<DropdownMenu.Item>Settings</DropdownMenu.Item>
-					<DropdownMenu.Item
-						onclick={() =>
-							toast.promise(
-								authClient.signOut().then(({ data, error }) => {
-									if (error) {
-										throw error;
-									}
-									goto('/');
-									return data;
-								}),
-								{
-									loading: 'Signing out...',
-									success: 'Signed out',
-									error: 'Something went wrong'
-								}
-							)}>Sign out</DropdownMenu.Item
-					>
+					{#each actions as action (action.text)}
+						<DropdownMenu.Item onclick={action.onClick}
+							><action.icon />{action.text}</DropdownMenu.Item
+						>
+					{/each}
 				</DropdownMenu.Group>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
