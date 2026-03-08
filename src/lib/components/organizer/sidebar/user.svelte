@@ -30,10 +30,12 @@
 			keepPreviousData: true
 		})
 	);
+
+	let accountMenuOpen = $state(false);
 </script>
 
 <Sidebar.MenuItem>
-	<DropdownMenu.Root>
+	<DropdownMenu.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
 		<DropdownMenu.Trigger class="w-full">
 			{#snippet child({ props })}
 				<Sidebar.MenuButton
