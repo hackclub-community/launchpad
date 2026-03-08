@@ -21,7 +21,9 @@
 >
 	<Tooltip.Root>
 		<Tooltip.Trigger>
-			<Sidebar.Trigger />
+			{#snippet child({ props })}
+				<Sidebar.Trigger {...props} />
+			{/snippet}
 		</Tooltip.Trigger>
 		<Tooltip.Content collisionPadding={16}>
 			<KbdGroup>
