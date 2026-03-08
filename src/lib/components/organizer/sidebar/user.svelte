@@ -12,6 +12,7 @@
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 	import { cn } from '$lib/utils';
 	import { type ComponentProps } from 'svelte';
+	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
 
 	const {
 		data
@@ -32,45 +33,49 @@
 		})
 	);
 
+	const isMobile = new IsMobile();
+
 	let accountMenuOpen = $state(false);
 </script>
 
 <Sidebar.MenuItem>
-	<DropdownMenu.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
-		<DropdownMenu.Trigger class="w-full">
-			{#snippet child({ props })}
-				{@render menuButton({ props })}
-			{/snippet}
-		</DropdownMenu.Trigger>
-		<DropdownMenu.Content align="end">
-			<DropdownMenu.Group>
-				<DropdownMenu.Label
-					>{user.data?.name}
-					<br />
-					<span class="text-xs font-normal">{user.data?.email}</span></DropdownMenu.Label
-				>
-				<DropdownMenu.Separator />
-				<DropdownMenu.Item>Settings</DropdownMenu.Item>
-				<DropdownMenu.Item
-					onclick={() =>
-						toast.promise(
-							authClient.signOut().then(({ data, error }) => {
-								if (error) {
-									throw error;
+	{#if isMobile.current}{:else}
+		<DropdownMenu.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
+			<DropdownMenu.Trigger class="w-full">
+				{#snippet child({ props })}
+					{@render menuButton({ props })}
+				{/snippet}
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content align="end">
+				<DropdownMenu.Group>
+					<DropdownMenu.Label
+						>{user.data?.name}
+						<br />
+						<span class="text-xs font-normal">{user.data?.email}</span></DropdownMenu.Label
+					>
+					<DropdownMenu.Separator />
+					<DropdownMenu.Item>Settings</DropdownMenu.Item>
+					<DropdownMenu.Item
+						onclick={() =>
+							toast.promise(
+								authClient.signOut().then(({ data, error }) => {
+									if (error) {
+										throw error;
+									}
+									goto('/');
+									return data;
+								}),
+								{
+									loading: 'Signing out...',
+									success: 'Signed out',
+									error: 'Something went wrong'
 								}
-								goto('/');
-								return data;
-							}),
-							{
-								loading: 'Signing out...',
-								success: 'Signed out',
-								error: 'Something went wrong'
-							}
-						)}>Sign out</DropdownMenu.Item
-				>
-			</DropdownMenu.Group>
-		</DropdownMenu.Content>
-	</DropdownMenu.Root>
+							)}>Sign out</DropdownMenu.Item
+					>
+				</DropdownMenu.Group>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
+	{/if}
 </Sidebar.MenuItem>
 
 {#snippet menuButton({ props }: { props: ComponentProps<typeof Sidebar.MenuButton> })}
