@@ -78,11 +78,11 @@
 		{@render menuButton({
 			props: {
 				onclick: () => {
-					accountMenuOpen = true;
+					accountDialogOpen = true;
 				}
 			}
 		})}
-		<Drawer.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
+		<!-- <Drawer.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
 			<Drawer.Content>
 				<Drawer.Header>
 					<Drawer.Title>
@@ -101,7 +101,7 @@
 					{/each}
 				</Drawer.Footer>
 			</Drawer.Content>
-		</Drawer.Root>
+		</Drawer.Root> -->
 	{:else}
 		<DropdownMenu.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
 			<DropdownMenu.Trigger class="w-full">
