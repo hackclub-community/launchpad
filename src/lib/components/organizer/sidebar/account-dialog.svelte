@@ -19,19 +19,26 @@
 		TvIcon,
 		WatchIcon,
 		GlobeIcon,
-		RefreshCwIcon
+		RefreshCwIcon,
+		LogOutIcon
 	} from '@lucide/svelte';
 	import { UAParser } from 'ua-parser-js';
 	import { cn } from '$lib/utils';
 
-	let { open = $bindable() }: { open: boolean } = $props();
+let {
+	open = $bindable(),
+	profileName = '',
+	profileEmail = ''
+}: {
+	open: boolean;
+	profileName?: string | null;
+	profileEmail?: string | null;
+} = $props();
 
 	const sidebar = useSidebar();
 
 	let name = $state('');
 	let initialName = $state('');
-	let email = $state('');
-	let loadingProfile = $state(false);
 	let savingName = $state(false);
 	let sessions = $state<ParsedSession[]>([]);
 	let loadingSessions = $state(false);
@@ -113,23 +120,6 @@
 				deviceLabel
 			}
 		};
-	}
-
-	async function loadProfile() {
-		loadingProfile = true;
-		try {
-			const { data, error } = await authClient.getSession();
-			if (error) throw error;
-
-			name = data?.user?.name ?? '';
-			initialName = data?.user?.name ?? '';
-			email = data?.user?.email ?? '';
-		} catch (err) {
-			toast.error('Failed to load account settings');
-			console.error(err);
-		} finally {
-			loadingProfile = false;
-		}
 	}
 
 	async function loadSessions() {
@@ -295,7 +285,7 @@
 
 	const canSaveName = $derived.by(() => {
 		const trimmed = name.trim();
-		return !!trimmed && trimmed !== initialName && !savingName && !loadingProfile;
+	return !!trimmed && trimmed !== initialName && !savingName;
 	});
 
 	async function saveName() {
@@ -337,8 +327,15 @@
 	$effect(() => {
 		if (open && !loadedOnce) {
 			loadedOnce = true;
-			void Promise.all([loadProfile(), loadSessions(), loadAccounts()]);
+			void Promise.all([loadSessions(), loadAccounts()]);
 		}
+	});
+
+	$effect(() => {
+		if (!open) return;
+		const nextName = profileName ?? '';
+		name = nextName;
+		initialName = nextName;
 	});
 </script>
 
@@ -364,7 +361,7 @@
 							autocomplete="name"
 							maxlength={32}
 							bind:value={name}
-							disabled={loadingProfile || savingName}
+							disabled={savingName}
 						/>
 					</div>
 				</div>
@@ -387,7 +384,7 @@
 				<Input.Root
 					id="account-email"
 					type="email"
-					value={email || ''}
+					value={profileEmail || ''}
 					placeholder="No email found"
 					disabled
 					readonly

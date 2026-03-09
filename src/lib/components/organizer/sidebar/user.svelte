@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import * as Drawer from '$lib/components/ui/drawer/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronUpIcon, LogOutIcon, SettingsIcon } from '@lucide/svelte';
@@ -13,7 +12,7 @@
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 	import { cn } from '$lib/utils';
 	import { type ComponentProps } from 'svelte';
-	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
+	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui';
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
 	import AccountDialog from './account-dialog.svelte';
@@ -131,7 +130,11 @@
 		</DropdownMenu.Root>
 	{/if}
 </Sidebar.MenuItem>
-<AccountDialog bind:open={accountDialogOpen} />
+<AccountDialog
+	bind:open={accountDialogOpen}
+	profileName={user.data?.name}
+	profileEmail={user.data?.email}
+/>
 
 {#snippet menuButton({ props }: { props: ComponentProps<typeof Sidebar.MenuButton> })}
 	<Sidebar.MenuButton
