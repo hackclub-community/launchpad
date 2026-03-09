@@ -546,6 +546,30 @@
 					</Tabs.List>
 					<Tabs.Content value="profile" class="pt-3">
 						{@render ProfileSection()}
+						<Button.Root
+							class="mt-4 w-full"
+							size="lg"
+							variant="outline"
+							onclick={() => {
+								toast.promise(
+									authClient.signOut().then(({ data, error }) => {
+										if (error) {
+											throw error;
+										}
+										goto('/');
+										return data;
+									}),
+									{
+										loading: 'Signing out...',
+										success: 'Signed out',
+										error: 'Something went wrong'
+									}
+								);
+							}}
+						>
+							<LogOutIcon />
+							Sign out
+						</Button.Root>
 					</Tabs.Content>
 					<Tabs.Content value="providers" class="pt-3">
 						{@render ProvidersSection()}
