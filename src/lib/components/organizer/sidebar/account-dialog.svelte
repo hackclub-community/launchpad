@@ -22,6 +22,7 @@
 		RefreshCwIcon
 	} from '@lucide/svelte';
 	import { UAParser } from 'ua-parser-js';
+	import { cn } from '$lib/utils';
 
 	let { open = $bindable() }: { open: boolean } = $props();
 
@@ -47,6 +48,12 @@
 	let loadedOnce = $state(false);
 	let mobileTab = $state<'profile' | 'providers' | 'sessions' | 'danger'>('profile');
 	let desktopTab = $state<'profile' | 'providers' | 'sessions' | 'danger'>('profile');
+	const desktopTabs = [
+		{ value: 'profile', label: 'Profile' },
+		{ value: 'providers', label: 'Providers' },
+		{ value: 'sessions', label: 'Sessions' },
+		{ value: 'danger', label: 'Danger zone' }
+	] as const;
 
 	type SessionItem = {
 		id?: string;
@@ -531,46 +538,19 @@
 			</Dialog.Header>
 			<div class="grid min-h-72 sm:grid-cols-[180px_minmax(0,1fr)]">
 				<nav class="space-y-1 pr-4">
-					<button
-						type="button"
-						class="w-full rounded-md px-3 py-2 text-left text-sm transition-colors {desktopTab ===
-						'profile'
-							? 'bg-muted font-medium text-foreground'
-							: 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'}"
-						onclick={() => (desktopTab = 'profile')}
-					>
-						Profile
-					</button>
-					<button
-						type="button"
-						class="w-full rounded-md px-3 py-2 text-left text-sm transition-colors {desktopTab ===
-						'providers'
-							? 'bg-muted font-medium text-foreground'
-							: 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'}"
-						onclick={() => (desktopTab = 'providers')}
-					>
-						Providers
-					</button>
-					<button
-						type="button"
-						class="w-full rounded-md px-3 py-2 text-left text-sm transition-colors {desktopTab ===
-						'sessions'
-							? 'bg-muted font-medium text-foreground'
-							: 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'}"
-						onclick={() => (desktopTab = 'sessions')}
-					>
-						Sessions
-					</button>
-					<button
-						type="button"
-						class="w-full rounded-md px-3 py-2 text-left text-sm transition-colors {desktopTab ===
-						'danger'
-							? 'bg-destructive/10 font-medium text-destructive'
-							: 'text-muted-foreground hover:bg-destructive/10 hover:text-destructive'}"
-						onclick={() => (desktopTab = 'danger')}
-					>
-						Danger zone
-					</button>
+					{#each desktopTabs as tab (tab.value)}
+						<Button.Root
+							variant={desktopTab === tab.value
+								? tab.value === 'danger'
+									? 'destructive'
+									: 'default'
+								: 'ghost'}
+							class={cn('w-full justify-start', desktopTab !== tab.value && 'border-transparent!')}
+							onclick={() => (desktopTab = tab.value)}
+						>
+							{tab.label}
+						</Button.Root>
+					{/each}
 				</nav>
 				<div class="h-fit min-w-0 rounded-sm border bg-card p-4 shadow-sm">
 					{#if desktopTab === 'profile'}
