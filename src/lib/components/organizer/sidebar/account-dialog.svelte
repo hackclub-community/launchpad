@@ -134,22 +134,12 @@
 		}
 
 		try {
-			await toast.promise(
-				authClient
-					.revokeSession({
-						token: session.token
-					})
-					.then(({ error }) => {
-						if (error) throw error;
-						sessions = sessions.filter((s) => (s.id ?? s.token) !== id);
-					}),
-				{
-					loading: 'Revoking session...',
-					success: 'Session revoked',
-					error: 'Failed to revoke session'
-				}
-			);
+			const { error } = await authClient.revokeSession({ token: session.token });
+			if (error) throw error;
+			sessions = sessions.filter((s) => (s.id ?? s.token) !== id);
+			toast.success('Session revoked');
 		} catch (err) {
+			toast.error('Failed to revoke session');
 			console.error(err);
 		} finally {
 			revoking = { ...revoking, [id]: false };
