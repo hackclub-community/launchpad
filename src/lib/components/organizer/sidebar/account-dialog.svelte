@@ -4,6 +4,7 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import * as Button from '$lib/components/ui/button/index.js';
 	import * as Badge from '$lib/components/ui/badge/index.js';
+	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import * as InputGroup from '$lib/components/ui/input-group/index.js';
 	import Label from '$lib/components/ui/label/label.svelte';
 
@@ -44,6 +45,8 @@
 	let deleteConfirmOpen = $state(false);
 	let deletingAccount = $state(false);
 	let loadedOnce = $state(false);
+	let mobileTab = $state<'profile' | 'providers' | 'sessions' | 'danger'>('profile');
+	let desktopTab = $state<'profile' | 'providers' | 'sessions' | 'danger'>('profile');
 
 	type SessionItem = {
 		id?: string;
@@ -332,163 +335,159 @@
 	});
 </script>
 
-{#snippet AccountSettings()}
-	<div class="space-y-6">
-		<form
-			class="space-y-3"
-			onsubmit={(event) => {
-				event.preventDefault();
-				void saveName();
-			}}
-		>
-			<div class="min-w-0 flex-1 space-y-2">
-				<Label for="account-name">Name</Label>
-				<InputGroup.Root>
-					<InputGroup.Input
-						id="account-name"
-						placeholder="Your name"
-						autocomplete="name"
-						bind:value={name}
-						disabled={loadingProfile || savingName}
-					/>
-					<InputGroup.Addon align="inline-end">
-						<InputGroup.Button type="submit" variant="default" disabled={!canSaveName}>
-							{savingName ? 'Saving…' : 'Save changes'}
-						</InputGroup.Button>
-					</InputGroup.Addon>
-				</InputGroup.Root>
-				{#if email}
-					<p class="text-xs text-muted-foreground">{email}</p>
-				{/if}
-			</div>
-		</form>
+{#snippet ProfileSection()}
+	<form
+		class="space-y-3"
+		onsubmit={(event) => {
+			event.preventDefault();
+			void saveName();
+		}}
+	>
+		<div class="min-w-0 flex-1 space-y-2">
+			<Label for="account-name">Name</Label>
+			<InputGroup.Root>
+				<InputGroup.Input
+					id="account-name"
+					placeholder="Your name"
+					autocomplete="name"
+					bind:value={name}
+					disabled={loadingProfile || savingName}
+				/>
+				<InputGroup.Addon align="inline-end">
+					<InputGroup.Button type="submit" variant="default" disabled={!canSaveName}>
+						{savingName ? 'Saving…' : 'Save changes'}
+					</InputGroup.Button>
+				</InputGroup.Addon>
+			</InputGroup.Root>
+			{#if email}
+				<p class="text-xs text-muted-foreground">{email}</p>
+			{/if}
+		</div>
+	</form>
+{/snippet}
 
-		<div class="border-t pt-4">
-			<div class="mb-3 flex items-center justify-between">
-				<div class="space-y-1">
-					<h4 class="text-sm font-medium">Social providers</h4>
-					<p class="text-xs text-muted-foreground">Link or unlink sign-in providers.</p>
+{#snippet ProvidersSection()}
+	<div class="space-y-3">
+		<div class="space-y-1">
+			<h4 class="text-sm font-medium">Social providers</h4>
+			<p class="text-xs text-muted-foreground">Link or unlink sign-in providers.</p>
+		</div>
+		<div class="space-y-2">
+			{#each providerConfigs as provider (provider.id)}
+				{@const linked = getLinkedAccount(provider.id)}
+				<div class="flex items-center justify-between rounded-lg border px-3 py-2.5">
+					<div class="text-sm font-medium">{provider.label}</div>
+					{#if loadingAccounts}
+						<Button.Root size="sm" disabled class="min-w-24">Loading...</Button.Root>
+					{:else if linked}
+						<Button.Root
+							variant="outline"
+							size="sm"
+							disabled={unlinkingProvider[provider.id]}
+							onclick={() => void unlinkProvider(provider.id)}
+							class="min-w-24"
+						>
+							{unlinkingProvider[provider.id] ? 'Unlinking…' : 'Unlink'}
+						</Button.Root>
+					{:else}
+						<Button.Root
+							size="sm"
+							disabled={linkingProvider[provider.id]}
+							onclick={() => void linkProvider(provider.id)}
+							class="min-w-24"
+						>
+							{linkingProvider[provider.id] ? 'Redirecting…' : 'Link'}
+						</Button.Root>
+					{/if}
 				</div>
+			{/each}
+		</div>
+	</div>
+{/snippet}
+
+{#snippet SessionsSection()}
+	<div class="space-y-3">
+		<div class="flex items-center justify-between">
+			<div class="space-y-1">
+				<h4 class="text-sm font-medium">Sessions</h4>
+				<p class="text-xs text-muted-foreground">Devices signed in to your account.</p>
 			</div>
-			<div class="space-y-2">
-				{#each providerConfigs as provider (provider.id)}
-					{@const linked = getLinkedAccount(provider.id)}
-					<div class="flex items-center justify-between rounded-lg border px-3 py-2.5">
-						<div class="text-sm font-medium">{provider.label}</div>
-						{#if loadingAccounts}
-							<Button.Root size="sm" disabled class="min-w-24">Loading...</Button.Root>
-						{:else if linked}
+			<Button.Root
+				variant="ghost"
+				size="icon"
+				class="size-7"
+				onclick={() => void loadSessions()}
+				disabled={loadingSessions}
+			>
+				<RefreshCwIcon class="size-3.5 {loadingSessions ? 'animate-spin' : ''}" />
+			</Button.Root>
+		</div>
+
+		{#if loadingSessions && sessions.length === 0}
+			<div class="py-4 text-center text-sm text-muted-foreground">Loading sessions…</div>
+		{:else if sessions.length === 0}
+			<div class="py-4 text-center text-sm text-muted-foreground">No sessions found.</div>
+		{:else}
+			<div class="space-y-1">
+				{#each sessions as session ((session.id ?? session.token) || Math.random())}
+					{@const isCurrent = isCurrentSession(session)}
+					{@const DeviceIcon = getDeviceIcon(session.parsed.deviceType)}
+					{@const sessionId = session.id ?? session.token ?? ''}
+					<div
+						class="group flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors {isCurrent
+							? 'border-primary/20 bg-primary/5'
+							: 'hover:bg-muted/50'}"
+					>
+						<div class="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
+							<DeviceIcon class="size-4 text-muted-foreground" />
+						</div>
+
+						<div class="min-w-0 flex-1">
+							<div class="flex items-center gap-2">
+								<span class="truncate text-sm font-medium">
+									{session.parsed.deviceLabel}
+								</span>
+								{#if isCurrent}
+									<Badge.Badge variant="secondary" class="shrink-0 px-1.5 py-0 text-[10px]"
+										>This device</Badge.Badge
+									>
+								{/if}
+							</div>
+							<div class="flex items-center gap-1.5 text-xs text-muted-foreground">
+								<span>{session.ipAddress || 'Unknown IP'}</span>
+								<span>·</span>
+								<span>{formatDate(session.createdAt)}</span>
+							</div>
+						</div>
+
+						{#if !isCurrent}
 							<Button.Root
-								variant="outline"
+								variant="destructive"
 								size="sm"
-								disabled={unlinkingProvider[provider.id]}
-								onclick={() => void unlinkProvider(provider.id)}
-								class="min-w-24"
+								disabled={revoking[sessionId]}
+								onclick={() => requestRevokeSession(session)}
 							>
-								{unlinkingProvider[provider.id] ? 'Unlinking…' : 'Unlink'}
-							</Button.Root>
-						{:else}
-							<Button.Root
-								size="sm"
-								disabled={linkingProvider[provider.id]}
-								onclick={() => void linkProvider(provider.id)}
-								class="min-w-24"
-							>
-								{linkingProvider[provider.id] ? 'Redirecting…' : 'Link'}
+								{revoking[sessionId] ? 'Revoking…' : 'Revoke'}
 							</Button.Root>
 						{/if}
 					</div>
 				{/each}
 			</div>
+		{/if}
+	</div>
+{/snippet}
+
+{#snippet DangerSection()}
+	<div class="space-y-3">
+		<div class="space-y-1">
+			<h4 class="text-sm font-medium">Delete account</h4>
+			<p class="text-xs text-muted-foreground">
+				Permanently delete your account and all related data.
+			</p>
 		</div>
-
-		<div class="border-t pt-4">
-			<div class="mb-3 flex items-center justify-between">
-				<div class="space-y-1">
-					<h4 class="text-sm font-medium">Sessions</h4>
-					<p class="text-xs text-muted-foreground">Devices signed in to your account.</p>
-				</div>
-				<Button.Root
-					variant="ghost"
-					size="icon"
-					class="size-7"
-					onclick={() => void loadSessions()}
-					disabled={loadingSessions}
-				>
-					<RefreshCwIcon class="size-3.5 {loadingSessions ? 'animate-spin' : ''}" />
-				</Button.Root>
-			</div>
-
-			{#if loadingSessions && sessions.length === 0}
-				<div class="py-4 text-center text-sm text-muted-foreground">Loading sessions…</div>
-			{:else if sessions.length === 0}
-				<div class="py-4 text-center text-sm text-muted-foreground">No sessions found.</div>
-			{:else}
-				<div class="space-y-1">
-					{#each sessions as session ((session.id ?? session.token) || Math.random())}
-						{@const isCurrent = isCurrentSession(session)}
-						{@const DeviceIcon = getDeviceIcon(session.parsed.deviceType)}
-						{@const sessionId = session.id ?? session.token ?? ''}
-						<div
-							class="group flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors {isCurrent
-								? 'border-primary/20 bg-primary/5'
-								: 'hover:bg-muted/50'}"
-						>
-							<div class="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
-								<DeviceIcon class="size-4 text-muted-foreground" />
-							</div>
-
-							<div class="min-w-0 flex-1">
-								<div class="flex items-center gap-2">
-									<span class="truncate text-sm font-medium">
-										{session.parsed.deviceLabel}
-									</span>
-									{#if isCurrent}
-										<Badge.Badge variant="secondary" class="shrink-0 px-1.5 py-0 text-[10px]"
-											>This device</Badge.Badge
-										>
-									{/if}
-								</div>
-								<div class="flex items-center gap-1.5 text-xs text-muted-foreground">
-									<span>{session.ipAddress || 'Unknown IP'}</span>
-									<span>·</span>
-									<span>{formatDate(session.createdAt)}</span>
-								</div>
-							</div>
-
-							{#if !isCurrent}
-								<Button.Root
-									variant="destructive"
-									size="sm"
-									disabled={revoking[sessionId]}
-									onclick={() => requestRevokeSession(session)}
-								>
-									{revoking[sessionId] ? 'Revoking…' : 'Revoke'}
-								</Button.Root>
-							{/if}
-						</div>
-					{/each}
-				</div>
-			{/if}
-		</div>
-
-		<div class="border-t pt-4">
-			<div class="flex items-end justify-between gap-3">
-				<div class="space-y-1">
-					<h4 class="text-sm font-medium">Delete account</h4>
-					<p class="text-xs text-muted-foreground">
-						Permanently delete your account and all related data.
-					</p>
-				</div>
-				<Button.Root
-					variant="destructive"
-					onclick={() => (deleteConfirmOpen = true)}
-					class="shrink-0"
-				>
-					Delete account
-				</Button.Root>
-			</div>
-		</div>
+		<Button.Root variant="destructive" onclick={() => (deleteConfirmOpen = true)} class="shrink-0">
+			Delete account
+		</Button.Root>
 	</div>
 {/snippet}
 
@@ -500,18 +499,91 @@
 				<Drawer.Description>Update your profile and manage your account.</Drawer.Description>
 			</Drawer.Header>
 			<div class="px-4 pb-4">
-				{@render AccountSettings()}
+				<Tabs.Root bind:value={mobileTab}>
+					<Tabs.List class="grid h-auto w-full grid-cols-4">
+						<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
+						<Tabs.Trigger value="providers">Providers</Tabs.Trigger>
+						<Tabs.Trigger value="sessions">Sessions</Tabs.Trigger>
+						<Tabs.Trigger value="danger">Danger</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="profile" class="pt-3">
+						{@render ProfileSection()}
+					</Tabs.Content>
+					<Tabs.Content value="providers" class="pt-3">
+						{@render ProvidersSection()}
+					</Tabs.Content>
+					<Tabs.Content value="sessions" class="pt-3">
+						{@render SessionsSection()}
+					</Tabs.Content>
+					<Tabs.Content value="danger" class="pt-3">
+						{@render DangerSection()}
+					</Tabs.Content>
+				</Tabs.Root>
 			</div>
 		</Drawer.Content>
 	</Drawer.Root>
 {:else}
 	<Dialog.Root bind:open>
-		<Dialog.Content class="sm:max-w-lg">
+		<Dialog.Content class="sm:max-w-4xl">
 			<Dialog.Header>
 				<Dialog.Title>Account settings</Dialog.Title>
 				<Dialog.Description>Update your profile and manage your account.</Dialog.Description>
 			</Dialog.Header>
-			{@render AccountSettings()}
+			<div class="grid min-h-72 sm:grid-cols-[180px_minmax(0,1fr)]">
+				<nav class="space-y-1 pr-4">
+					<button
+						type="button"
+						class="w-full rounded-md px-3 py-2 text-left text-sm transition-colors {desktopTab ===
+						'profile'
+							? 'bg-muted font-medium text-foreground'
+							: 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'}"
+						onclick={() => (desktopTab = 'profile')}
+					>
+						Profile
+					</button>
+					<button
+						type="button"
+						class="w-full rounded-md px-3 py-2 text-left text-sm transition-colors {desktopTab ===
+						'providers'
+							? 'bg-muted font-medium text-foreground'
+							: 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'}"
+						onclick={() => (desktopTab = 'providers')}
+					>
+						Providers
+					</button>
+					<button
+						type="button"
+						class="w-full rounded-md px-3 py-2 text-left text-sm transition-colors {desktopTab ===
+						'sessions'
+							? 'bg-muted font-medium text-foreground'
+							: 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'}"
+						onclick={() => (desktopTab = 'sessions')}
+					>
+						Sessions
+					</button>
+					<button
+						type="button"
+						class="w-full rounded-md px-3 py-2 text-left text-sm transition-colors {desktopTab ===
+						'danger'
+							? 'bg-destructive/10 font-medium text-destructive'
+							: 'text-muted-foreground hover:bg-destructive/10 hover:text-destructive'}"
+						onclick={() => (desktopTab = 'danger')}
+					>
+						Danger zone
+					</button>
+				</nav>
+				<div class="h-fit min-w-0 rounded-sm border bg-card p-4 shadow-sm">
+					{#if desktopTab === 'profile'}
+						{@render ProfileSection()}
+					{:else if desktopTab === 'providers'}
+						{@render ProvidersSection()}
+					{:else if desktopTab === 'sessions'}
+						{@render SessionsSection()}
+					{:else}
+						{@render DangerSection()}
+					{/if}
+				</div>
+			</div>
 		</Dialog.Content>
 	</Dialog.Root>
 {/if}
