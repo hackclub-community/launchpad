@@ -2,7 +2,7 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
-	import * as Button from '$lib/components/ui/button/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Badge from '$lib/components/ui/badge/index.js';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import * as Input from '$lib/components/ui/input/index.js';
@@ -25,15 +25,15 @@
 	import { UAParser } from 'ua-parser-js';
 	import { cn } from '$lib/utils';
 
-let {
-	open = $bindable(),
-	profileName = '',
-	profileEmail = ''
-}: {
-	open: boolean;
-	profileName?: string | null;
-	profileEmail?: string | null;
-} = $props();
+	let {
+		open = $bindable(),
+		profileName = '',
+		profileEmail = ''
+	}: {
+		open: boolean;
+		profileName?: string | null;
+		profileEmail?: string | null;
+	} = $props();
 
 	const sidebar = useSidebar();
 
@@ -285,7 +285,7 @@ let {
 
 	const canSaveName = $derived.by(() => {
 		const trimmed = name.trim();
-	return !!trimmed && trimmed !== initialName && !savingName;
+		return !!trimmed && trimmed !== initialName && !savingName;
 	});
 
 	async function saveName() {
@@ -367,9 +367,9 @@ let {
 				</div>
 				<div class="flex items-center justify-between gap-3 border-t px-4 py-3">
 					<p class="text-xs text-muted-foreground">Please use 32 characters at maximum.</p>
-					<Button.Root type="submit" variant="default" disabled={!canSaveName} class="shrink-0">
+					<Button type="submit" variant="default" disabled={!canSaveName} class="shrink-0">
 						{savingName ? 'Saving…' : 'Save'}
-					</Button.Root>
+					</Button>
 				</div>
 			</form>
 		</div>
@@ -406,9 +406,9 @@ let {
 				<div class="flex items-center justify-between rounded-sm border px-3 py-2.5">
 					<div class="text-sm font-medium">{provider.label}</div>
 					{#if loadingAccounts}
-						<Button.Root size="sm" disabled class="min-w-24">Loading...</Button.Root>
+						<Button size="sm" disabled class="min-w-24">Loading...</Button>
 					{:else if linked}
-						<Button.Root
+						<Button
 							variant="outline"
 							size="sm"
 							disabled={unlinkingProvider[provider.id]}
@@ -416,16 +416,16 @@ let {
 							class="min-w-24"
 						>
 							{unlinkingProvider[provider.id] ? 'Unlinking…' : 'Unlink'}
-						</Button.Root>
+						</Button>
 					{:else}
-						<Button.Root
+						<Button
 							size="sm"
 							disabled={linkingProvider[provider.id]}
 							onclick={() => void linkProvider(provider.id)}
 							class="min-w-24"
 						>
 							{linkingProvider[provider.id] ? 'Redirecting…' : 'Link'}
-						</Button.Root>
+						</Button>
 					{/if}
 				</div>
 			{/each}
@@ -440,7 +440,7 @@ let {
 				<h4 class="text-sm font-medium">Sessions</h4>
 				<p class="text-xs text-muted-foreground">Devices signed in to your account.</p>
 			</div>
-			<Button.Root
+			<Button
 				variant="ghost"
 				size="icon"
 				class="size-7"
@@ -448,7 +448,7 @@ let {
 				disabled={loadingSessions}
 			>
 				<RefreshCwIcon class="size-3.5 {loadingSessions ? 'animate-spin' : ''}" />
-			</Button.Root>
+			</Button>
 		</div>
 
 		<div class="p-4">
@@ -490,14 +490,14 @@ let {
 							</div>
 
 							{#if !isCurrent}
-								<Button.Root
+								<Button
 									variant="destructive"
 									size="sm"
 									disabled={revoking[sessionId]}
 									onclick={() => requestRevokeSession(session)}
 								>
 									{revoking[sessionId] ? 'Revoking…' : 'Revoke'}
-								</Button.Root>
+								</Button>
 							{/if}
 						</div>
 					{/each}
@@ -516,13 +516,9 @@ let {
 			</p>
 		</div>
 		<div class="p-4">
-			<Button.Root
-				variant="destructive"
-				onclick={() => (deleteConfirmOpen = true)}
-				class="shrink-0"
-			>
+			<Button variant="destructive" onclick={() => (deleteConfirmOpen = true)} class="shrink-0">
 				Delete account
-			</Button.Root>
+			</Button>
 		</div>
 	</div>
 {/snippet}
@@ -543,7 +539,7 @@ let {
 					</Tabs.List>
 					<Tabs.Content value="profile" class="pt-3">
 						{@render ProfileSection()}
-						<Button.Root
+						<Button
 							class="mt-4 w-full"
 							size="lg"
 							variant="outline"
@@ -566,7 +562,7 @@ let {
 						>
 							<LogOutIcon />
 							Sign out
-						</Button.Root>
+						</Button>
 					</Tabs.Content>
 					<Tabs.Content value="providers" class="pt-3">
 						{@render ProvidersSection()}
@@ -590,7 +586,7 @@ let {
 			<div class="grid min-h-72 sm:grid-cols-[180px_minmax(0,1fr)]">
 				<nav class="space-y-1 pr-4">
 					{#each desktopTabs as tab (tab.value)}
-						<Button.Root
+						<Button
 							variant={desktopTab === tab.value
 								? tab.value === 'danger'
 									? 'destructive'
@@ -600,7 +596,7 @@ let {
 							onclick={() => (desktopTab = tab.value)}
 						>
 							{tab.label}
-						</Button.Root>
+						</Button>
 					{/each}
 				</nav>
 				<div class="min-w-0">
