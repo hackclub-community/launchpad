@@ -4,7 +4,7 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import * as Button from '$lib/components/ui/button/index.js';
 	import * as Badge from '$lib/components/ui/badge/index.js';
-	import * as Input from '$lib/components/ui/input/index.js';
+	import * as InputGroup from '$lib/components/ui/input-group/index.js';
 	import Label from '$lib/components/ui/label/label.svelte';
 
 	import { useSidebar } from '$lib/components/ui/sidebar';
@@ -263,22 +263,26 @@
 				void saveName();
 			}}
 		>
-			<div class="space-y-2">
+			<div class="min-w-0 flex-1 space-y-2">
 				<Label for="account-name">Name</Label>
-				<Input.Root
-					id="account-name"
-					placeholder="Your name"
-					autocomplete="name"
-					bind:value={name}
-					disabled={loadingProfile || savingName}
-				/>
+				<InputGroup.Root>
+					<InputGroup.Input
+						id="account-name"
+						placeholder="Your name"
+						autocomplete="name"
+						bind:value={name}
+						disabled={loadingProfile || savingName}
+					/>
+					<InputGroup.Addon align="inline-end">
+						<InputGroup.Button type="submit" variant="default" disabled={!canSaveName}>
+							{savingName ? 'Saving…' : 'Save changes'}
+						</InputGroup.Button>
+					</InputGroup.Addon>
+				</InputGroup.Root>
+				{#if email}
+					<p class="text-xs text-muted-foreground">{email}</p>
+				{/if}
 			</div>
-			{#if email}
-				<p class="text-xs text-muted-foreground">{email}</p>
-			{/if}
-			<Button.Root type="submit" disabled={!canSaveName}>
-				{savingName ? 'Saving…' : 'Save changes'}
-			</Button.Root>
 		</form>
 
 		<div class="border-t pt-4">
@@ -352,15 +356,21 @@
 		</div>
 
 		<div class="border-t pt-4">
-			<div class="mb-3 space-y-1">
-				<h4 class="text-sm font-medium">Delete account</h4>
-				<p class="text-xs text-muted-foreground">
-					Permanently delete your account and all related data.
-				</p>
+			<div class="flex items-end justify-between gap-3">
+				<div class="space-y-1">
+					<h4 class="text-sm font-medium">Delete account</h4>
+					<p class="text-xs text-muted-foreground">
+						Permanently delete your account and all related data.
+					</p>
+				</div>
+				<Button.Root
+					variant="destructive"
+					onclick={() => (deleteConfirmOpen = true)}
+					class="shrink-0"
+				>
+					Delete account
+				</Button.Root>
 			</div>
-			<Button.Root variant="destructive" onclick={() => (deleteConfirmOpen = true)}>
-				Delete account
-			</Button.Root>
 		</div>
 	</div>
 {/snippet}
