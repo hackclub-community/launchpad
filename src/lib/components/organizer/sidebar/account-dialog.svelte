@@ -37,6 +37,10 @@
 	let revokeConfirmOpen = $state(false);
 	let pendingSession = $state<ParsedSession | null>(null);
 	let currentSessionToken = $state<string | null>(null);
+	let accounts = $state<AccountItem[]>([]);
+	let loadingAccounts = $state(false);
+	let linkingProvider = $state<Record<string, boolean>>({});
+	let unlinkingProvider = $state<Record<string, boolean>>({});
 	let deleteConfirmOpen = $state(false);
 	let deletingAccount = $state(false);
 	let loadedOnce = $state(false);
@@ -59,6 +63,18 @@
 			deviceLabel: string;
 		};
 	};
+
+	type AccountItem = {
+		id: string;
+		providerId: string;
+		accountId: string;
+	};
+
+	const providerConfigs = [
+		{ id: 'hca', label: 'Hack Club' },
+		{ id: 'github', label: 'GitHub' },
+		{ id: 'google', label: 'Google' }
+	] as const;
 
 	function parseSession(session: SessionItem): ParsedSession {
 		const ua = new UAParser(session.userAgent ?? '');
@@ -125,6 +141,68 @@
 			console.error(err);
 		} finally {
 			loadingSessions = false;
+		}
+	}
+
+	async function loadAccounts() {
+		loadingAccounts = true;
+		try {
+			const { data, error } = await authClient.listAccounts();
+			if (error) throw error;
+			accounts = (data ?? []) as AccountItem[];
+		} catch (err) {
+			toast.error('Failed to load linked providers');
+			console.error(err);
+		} finally {
+			loadingAccounts = false;
+		}
+	}
+
+	function getLinkedAccount(providerId: string) {
+		return accounts.find((account) => account.providerId === providerId);
+	}
+
+	async function linkProvider(providerId: string) {
+		linkingProvider = { ...linkingProvider, [providerId]: true };
+		try {
+			const { error } = await authClient.linkSocial({
+				provider: providerId,
+				callbackURL: '/organizer',
+				errorCallbackURL: '/organizer',
+				disableRedirect: false
+			});
+			if (error) throw error;
+		} catch (err) {
+			toast.error(
+				`Failed to link ${providerConfigs.find((p) => p.id === providerId)?.label ?? providerId}`
+			);
+			console.error(err);
+			linkingProvider = { ...linkingProvider, [providerId]: false };
+		}
+	}
+
+	async function unlinkProvider(providerId: string) {
+		const linked = getLinkedAccount(providerId);
+		if (!linked) return;
+
+		unlinkingProvider = { ...unlinkingProvider, [providerId]: true };
+		try {
+			const { error } = await authClient.unlinkAccount({
+				providerId,
+				accountId: linked.accountId
+			});
+			if (error) throw error;
+			accounts = accounts.filter((account) => account.id !== linked.id);
+			toast.success(
+				`${providerConfigs.find((p) => p.id === providerId)?.label ?? providerId} unlinked`
+			);
+		} catch (err) {
+			toast.error(
+				`Failed to unlink ${providerConfigs.find((p) => p.id === providerId)?.label ?? providerId}`
+			);
+			console.error(err);
+		} finally {
+			unlinkingProvider = { ...unlinkingProvider, [providerId]: false };
 		}
 	}
 
@@ -249,7 +327,7 @@
 	$effect(() => {
 		if (open && !loadedOnce) {
 			loadedOnce = true;
-			void Promise.all([loadProfile(), loadSessions()]);
+			void Promise.all([loadProfile(), loadSessions(), loadAccounts()]);
 		}
 	});
 </script>
@@ -284,6 +362,45 @@
 				{/if}
 			</div>
 		</form>
+
+		<div class="border-t pt-4">
+			<div class="mb-3 flex items-center justify-between">
+				<div class="space-y-1">
+					<h4 class="text-sm font-medium">Social providers</h4>
+					<p class="text-xs text-muted-foreground">Link or unlink sign-in providers.</p>
+				</div>
+			</div>
+			<div class="space-y-2">
+				{#each providerConfigs as provider (provider.id)}
+					{@const linked = getLinkedAccount(provider.id)}
+					<div class="flex items-center justify-between rounded-lg border px-3 py-2.5">
+						<div class="text-sm font-medium">{provider.label}</div>
+						{#if loadingAccounts}
+							<Button.Root size="sm" disabled class="min-w-24">Loading...</Button.Root>
+						{:else if linked}
+							<Button.Root
+								variant="outline"
+								size="sm"
+								disabled={unlinkingProvider[provider.id]}
+								onclick={() => void unlinkProvider(provider.id)}
+								class="min-w-24"
+							>
+								{unlinkingProvider[provider.id] ? 'Unlinking…' : 'Unlink'}
+							</Button.Root>
+						{:else}
+							<Button.Root
+								size="sm"
+								disabled={linkingProvider[provider.id]}
+								onclick={() => void linkProvider(provider.id)}
+								class="min-w-24"
+							>
+								{linkingProvider[provider.id] ? 'Redirecting…' : 'Link'}
+							</Button.Root>
+						{/if}
+					</div>
+				{/each}
+			</div>
+		</div>
 
 		<div class="border-t pt-4">
 			<div class="mb-3 flex items-center justify-between">
