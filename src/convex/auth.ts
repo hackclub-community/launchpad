@@ -25,6 +25,19 @@ export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
 		emailAndPassword: {
 			enabled: false
 		},
+		account: {
+			accountLinking: {
+				allowDifferentEmails: true
+			}
+		},
+		user: {
+			changeEmail: {
+				enabled: false
+			},
+			deleteUser: {
+				enabled: true
+			}
+		},
 		plugins: [
 			convex({ authConfig }),
 			genericOAuth({
