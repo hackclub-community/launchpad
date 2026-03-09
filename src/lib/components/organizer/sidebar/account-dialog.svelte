@@ -4,9 +4,12 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import * as Button from '$lib/components/ui/button/index.js';
 	import * as Badge from '$lib/components/ui/badge/index.js';
+	import * as Input from '$lib/components/ui/input/index.js';
+	import Label from '$lib/components/ui/label/label.svelte';
 
 	import { useSidebar } from '$lib/components/ui/sidebar';
 	import { authClient } from '$lib/auth-client';
+	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 	import {
 		MonitorIcon,
@@ -22,6 +25,21 @@
 	let { open = $bindable() }: { open: boolean } = $props();
 
 	const sidebar = useSidebar();
+
+	let name = $state('');
+	let initialName = $state('');
+	let email = $state('');
+	let loadingProfile = $state(false);
+	let savingName = $state(false);
+	let sessions = $state<ParsedSession[]>([]);
+	let loadingSessions = $state(false);
+	let revoking = $state<Record<string, boolean>>({});
+	let revokeConfirmOpen = $state(false);
+	let pendingSession = $state<ParsedSession | null>(null);
+	let currentSessionToken = $state<string | null>(null);
+	let deleteConfirmOpen = $state(false);
+	let deletingAccount = $state(false);
+	let loadedOnce = $state(false);
 
 	type SessionItem = {
 		id?: string;
@@ -41,14 +59,6 @@
 			deviceLabel: string;
 		};
 	};
-
-	let sessions = $state<ParsedSession[]>([]);
-	let loading = $state(false);
-	let loadedOnce = $state(false);
-	let revoking = $state<Record<string, boolean>>({});
-	let revokeConfirmOpen = $state(false);
-	let pendingSession = $state<ParsedSession | null>(null);
-	let currentSessionToken = $state<string | null>(null);
 
 	function parseSession(session: SessionItem): ParsedSession {
 		const ua = new UAParser(session.userAgent ?? '');
@@ -79,8 +89,25 @@
 		};
 	}
 
+	async function loadProfile() {
+		loadingProfile = true;
+		try {
+			const { data, error } = await authClient.getSession();
+			if (error) throw error;
+
+			name = data?.user?.name ?? '';
+			initialName = data?.user?.name ?? '';
+			email = data?.user?.email ?? '';
+		} catch (err) {
+			toast.error('Failed to load account settings');
+			console.error(err);
+		} finally {
+			loadingProfile = false;
+		}
+	}
+
 	async function loadSessions() {
-		loading = true;
+		loadingSessions = true;
 		try {
 			const [
 				{ data: sessionsData, error: sessionsError },
@@ -93,12 +120,11 @@
 			const raw = (sessionsData ?? []) as SessionItem[];
 			sessions = raw.map(parseSession);
 			currentSessionToken = currentSessionData?.session?.token ?? null;
-			loadedOnce = true;
 		} catch (err) {
 			toast.error('Failed to load sessions');
 			console.error(err);
 		} finally {
-			loading = false;
+			loadingSessions = false;
 		}
 	}
 
@@ -179,79 +205,163 @@
 		}
 	}
 
+	const canSaveName = $derived.by(() => {
+		const trimmed = name.trim();
+		return !!trimmed && trimmed !== initialName && !savingName && !loadingProfile;
+	});
+
+	async function saveName() {
+		const trimmed = name.trim();
+		if (!trimmed || trimmed === initialName) return;
+
+		savingName = true;
+		try {
+			const { error } = await authClient.updateUser({ name: trimmed });
+			if (error) throw error;
+			name = trimmed;
+			initialName = trimmed;
+			toast.success('Name updated');
+		} catch (err) {
+			toast.error('Failed to update name');
+			console.error(err);
+		} finally {
+			savingName = false;
+		}
+	}
+
+	async function confirmDeleteAccount() {
+		deletingAccount = true;
+		try {
+			const { error } = await authClient.deleteUser();
+			if (error) throw error;
+			toast.success('Account deleted');
+			deleteConfirmOpen = false;
+			open = false;
+			await goto('/');
+		} catch (err) {
+			toast.error('Failed to delete account');
+			console.error(err);
+		} finally {
+			deletingAccount = false;
+		}
+	}
+
 	$effect(() => {
 		if (open && !loadedOnce) {
-			void loadSessions();
+			loadedOnce = true;
+			void Promise.all([loadProfile(), loadSessions()]);
 		}
 	});
 </script>
 
-{#snippet SessionList()}
-	<div class="space-y-3">
-		<div class="flex items-center justify-between">
-			<p class="text-xs text-muted-foreground">Devices signed in to your account.</p>
-			<Button.Root
-				variant="ghost"
-				size="icon"
-				class="size-7"
-				onclick={() => void loadSessions()}
-				disabled={loading}
-			>
-				<RefreshCwIcon class="size-3.5 {loading ? 'animate-spin' : ''}" />
+{#snippet AccountSettings()}
+	<div class="space-y-6">
+		<form
+			class="space-y-3"
+			onsubmit={(event) => {
+				event.preventDefault();
+				void saveName();
+			}}
+		>
+			<div class="space-y-2">
+				<Label for="account-name">Name</Label>
+				<Input.Root
+					id="account-name"
+					placeholder="Your name"
+					autocomplete="name"
+					bind:value={name}
+					disabled={loadingProfile || savingName}
+				/>
+			</div>
+			{#if email}
+				<p class="text-xs text-muted-foreground">{email}</p>
+			{/if}
+			<Button.Root type="submit" disabled={!canSaveName}>
+				{savingName ? 'Saving…' : 'Save changes'}
 			</Button.Root>
+		</form>
+
+		<div class="border-t pt-4">
+			<div class="mb-3 flex items-center justify-between">
+				<div class="space-y-1">
+					<h4 class="text-sm font-medium">Sessions</h4>
+					<p class="text-xs text-muted-foreground">Devices signed in to your account.</p>
+				</div>
+				<Button.Root
+					variant="ghost"
+					size="icon"
+					class="size-7"
+					onclick={() => void loadSessions()}
+					disabled={loadingSessions}
+				>
+					<RefreshCwIcon class="size-3.5 {loadingSessions ? 'animate-spin' : ''}" />
+				</Button.Root>
+			</div>
+
+			{#if loadingSessions && sessions.length === 0}
+				<div class="py-4 text-center text-sm text-muted-foreground">Loading sessions…</div>
+			{:else if sessions.length === 0}
+				<div class="py-4 text-center text-sm text-muted-foreground">No sessions found.</div>
+			{:else}
+				<div class="space-y-1">
+					{#each sessions as session ((session.id ?? session.token) || Math.random())}
+						{@const isCurrent = isCurrentSession(session)}
+						{@const DeviceIcon = getDeviceIcon(session.parsed.deviceType)}
+						{@const sessionId = session.id ?? session.token ?? ''}
+						<div
+							class="group flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors {isCurrent
+								? 'border-primary/20 bg-primary/5'
+								: 'hover:bg-muted/50'}"
+						>
+							<div class="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
+								<DeviceIcon class="size-4 text-muted-foreground" />
+							</div>
+
+							<div class="min-w-0 flex-1">
+								<div class="flex items-center gap-2">
+									<span class="truncate text-sm font-medium">
+										{session.parsed.deviceLabel}
+									</span>
+									{#if isCurrent}
+										<Badge.Badge variant="secondary" class="shrink-0 px-1.5 py-0 text-[10px]"
+											>This device</Badge.Badge
+										>
+									{/if}
+								</div>
+								<div class="flex items-center gap-1.5 text-xs text-muted-foreground">
+									<span>{session.ipAddress || 'Unknown IP'}</span>
+									<span>·</span>
+									<span>{formatDate(session.createdAt)}</span>
+								</div>
+							</div>
+
+							{#if !isCurrent}
+								<Button.Root
+									variant="destructive"
+									size="sm"
+									disabled={revoking[sessionId]}
+									onclick={() => requestRevokeSession(session)}
+								>
+									{revoking[sessionId] ? 'Revoking…' : 'Revoke'}
+								</Button.Root>
+							{/if}
+						</div>
+					{/each}
+				</div>
+			{/if}
 		</div>
 
-		{#if loading && sessions.length === 0}
-			<div class="py-8 text-center text-sm text-muted-foreground">Loading sessions…</div>
-		{:else if sessions.length === 0}
-			<div class="py-8 text-center text-sm text-muted-foreground">No sessions found.</div>
-		{:else}
-			<div class="space-y-1">
-				{#each sessions as session ((session.id ?? session.token) || Math.random())}
-					{@const isCurrent = isCurrentSession(session)}
-					{@const DeviceIcon = getDeviceIcon(session.parsed.deviceType)}
-					{@const sessionId = session.id ?? session.token ?? ''}
-					<div
-						class="group flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors {isCurrent
-							? 'border-primary/20 bg-primary/5'
-							: 'hover:bg-muted/50'}"
-					>
-						<div class="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
-							<DeviceIcon class="size-4 text-muted-foreground" />
-						</div>
-
-						<div class="min-w-0 flex-1">
-							<div class="flex items-center gap-2">
-								<span class="truncate text-sm font-medium">
-									{session.parsed.deviceLabel}
-								</span>
-								{#if isCurrent}
-									<Badge.Badge variant="secondary" class="shrink-0 px-1.5 py-0 text-[10px]"
-										>This device</Badge.Badge
-									>
-								{/if}
-							</div>
-							<div class="flex items-center gap-1.5 text-xs text-muted-foreground">
-								<span>{session.ipAddress || 'Unknown IP'}</span>
-								<span>·</span>
-								<span>{formatDate(session.createdAt)}</span>
-							</div>
-						</div>
-
-						{#if !isCurrent}
-							<Button.Root
-								variant="destructive"
-								size="sm"
-								disabled={revoking[sessionId]}
-								onclick={() => requestRevokeSession(session)}
-							>
-								{revoking[sessionId] ? 'Revoking…' : 'Revoke'}
-							</Button.Root>
-						{/if}
-					</div>
-				{/each}
+		<div class="border-t pt-4">
+			<div class="mb-3 space-y-1">
+				<h4 class="text-sm font-medium">Delete account</h4>
+				<p class="text-xs text-muted-foreground">
+					Permanently delete your account and all related data.
+				</p>
 			</div>
-		{/if}
+			<Button.Root variant="destructive" onclick={() => (deleteConfirmOpen = true)}>
+				Delete account
+			</Button.Root>
+		</div>
 	</div>
 {/snippet}
 
@@ -259,11 +369,11 @@
 	<Drawer.Root bind:open>
 		<Drawer.Content>
 			<Drawer.Header>
-				<Drawer.Title>Sessions</Drawer.Title>
-				<Drawer.Description class="sr-only">Manage your active sessions.</Drawer.Description>
+				<Drawer.Title>Account settings</Drawer.Title>
+				<Drawer.Description>Update your profile and manage your account.</Drawer.Description>
 			</Drawer.Header>
 			<div class="px-4 pb-4">
-				{@render SessionList()}
+				{@render AccountSettings()}
 			</div>
 		</Drawer.Content>
 	</Drawer.Root>
@@ -271,13 +381,30 @@
 	<Dialog.Root bind:open>
 		<Dialog.Content class="sm:max-w-lg">
 			<Dialog.Header>
-				<Dialog.Title>Sessions</Dialog.Title>
-				<Dialog.Description class="sr-only">Manage your active sessions.</Dialog.Description>
+				<Dialog.Title>Account settings</Dialog.Title>
+				<Dialog.Description>Update your profile and manage your account.</Dialog.Description>
 			</Dialog.Header>
-			{@render SessionList()}
+			{@render AccountSettings()}
 		</Dialog.Content>
 	</Dialog.Root>
 {/if}
+
+<AlertDialog.Root bind:open={deleteConfirmOpen}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>Delete account?</AlertDialog.Title>
+			<AlertDialog.Description>
+				This action cannot be undone and will permanently remove your account.
+			</AlertDialog.Description>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel disabled={deletingAccount}>Cancel</AlertDialog.Cancel>
+			<AlertDialog.Action onclick={() => void confirmDeleteAccount()} disabled={deletingAccount}>
+				{deletingAccount ? 'Deleting…' : 'Delete account'}
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
 
 <AlertDialog.Root bind:open={revokeConfirmOpen}>
 	<AlertDialog.Content>
