@@ -5,7 +5,7 @@
 	import * as Button from '$lib/components/ui/button/index.js';
 	import * as Badge from '$lib/components/ui/badge/index.js';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
-	import * as InputGroup from '$lib/components/ui/input-group/index.js';
+	import * as Input from '$lib/components/ui/input/index.js';
 	import Label from '$lib/components/ui/label/label.svelte';
 
 	import { useSidebar } from '$lib/components/ui/sidebar';
@@ -343,46 +343,70 @@
 </script>
 
 {#snippet ProfileSection()}
-	<form
-		class="space-y-3"
-		onsubmit={(event) => {
-			event.preventDefault();
-			void saveName();
-		}}
-	>
-		<div class="min-w-0 flex-1 space-y-2">
-			<Label for="account-name">Name</Label>
-			<InputGroup.Root>
-				<InputGroup.Input
-					id="account-name"
-					placeholder="Your name"
-					autocomplete="name"
-					bind:value={name}
-					disabled={loadingProfile || savingName}
-				/>
-				<InputGroup.Addon align="inline-end">
-					<InputGroup.Button type="submit" variant="default" disabled={!canSaveName}>
-						{savingName ? 'Saving…' : 'Save changes'}
-					</InputGroup.Button>
-				</InputGroup.Addon>
-			</InputGroup.Root>
-			{#if email}
-				<p class="text-xs text-muted-foreground">{email}</p>
-			{/if}
+	<div class="space-y-3">
+		<div class="overflow-hidden rounded-sm border bg-card/80 shadow-sm">
+			<form
+				onsubmit={(event) => {
+					event.preventDefault();
+					void saveName();
+				}}
+			>
+				<div class="space-y-3 px-4 py-4">
+					<h4 class="text-sm font-medium">Name</h4>
+					<p class="text-xs text-muted-foreground">
+						Please enter your full name, or a display name.
+					</p>
+					<div class="space-y-2">
+						<Label for="account-name" class="sr-only">Name</Label>
+						<Input.Root
+							id="account-name"
+							placeholder="Your name"
+							autocomplete="name"
+							maxlength={32}
+							bind:value={name}
+							disabled={loadingProfile || savingName}
+						/>
+					</div>
+				</div>
+				<div class="flex items-center justify-between gap-3 border-t px-4 py-3">
+					<p class="text-xs text-muted-foreground">Please use 32 characters at maximum.</p>
+					<Button.Root type="submit" variant="default" disabled={!canSaveName} class="shrink-0">
+						{savingName ? 'Saving…' : 'Save'}
+					</Button.Root>
+				</div>
+			</form>
 		</div>
-	</form>
+
+		<div class="overflow-hidden rounded-sm border bg-card/80 shadow-sm">
+			<div class="border-b px-4 py-3">
+				<h4 class="text-sm font-medium">Email</h4>
+				<p class="text-xs text-muted-foreground">Your account sign-in email address.</p>
+			</div>
+			<div class="p-4">
+				<Label for="account-email" class="sr-only">Email</Label>
+				<Input.Root
+					id="account-email"
+					type="email"
+					value={email || ''}
+					placeholder="No email found"
+					disabled
+					readonly
+				/>
+			</div>
+		</div>
+	</div>
 {/snippet}
 
 {#snippet ProvidersSection()}
-	<div class="space-y-3">
-		<div class="space-y-1">
+	<div class="overflow-hidden rounded-sm border bg-card/80 shadow-sm">
+		<div class="border-b px-4 py-3">
 			<h4 class="text-sm font-medium">Social providers</h4>
 			<p class="text-xs text-muted-foreground">Link or unlink sign-in providers.</p>
 		</div>
-		<div class="space-y-2">
+		<div class="space-y-2 p-4">
 			{#each providerConfigs as provider (provider.id)}
 				{@const linked = getLinkedAccount(provider.id)}
-				<div class="flex items-center justify-between rounded-lg border px-3 py-2.5">
+				<div class="flex items-center justify-between rounded-sm border px-3 py-2.5">
 					<div class="text-sm font-medium">{provider.label}</div>
 					{#if loadingAccounts}
 						<Button.Root size="sm" disabled class="min-w-24">Loading...</Button.Root>
@@ -413,8 +437,8 @@
 {/snippet}
 
 {#snippet SessionsSection()}
-	<div class="space-y-3">
-		<div class="flex items-center justify-between">
+	<div class="overflow-hidden rounded-sm border bg-card/80 shadow-sm">
+		<div class="flex items-center justify-between border-b px-4 py-3">
 			<div class="space-y-1">
 				<h4 class="text-sm font-medium">Sessions</h4>
 				<p class="text-xs text-muted-foreground">Devices signed in to your account.</p>
@@ -430,71 +454,79 @@
 			</Button.Root>
 		</div>
 
-		{#if loadingSessions && sessions.length === 0}
-			<div class="py-4 text-center text-sm text-muted-foreground">Loading sessions…</div>
-		{:else if sessions.length === 0}
-			<div class="py-4 text-center text-sm text-muted-foreground">No sessions found.</div>
-		{:else}
-			<div class="space-y-1">
-				{#each sessions as session ((session.id ?? session.token) || Math.random())}
-					{@const isCurrent = isCurrentSession(session)}
-					{@const DeviceIcon = getDeviceIcon(session.parsed.deviceType)}
-					{@const sessionId = session.id ?? session.token ?? ''}
-					<div
-						class="group flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors {isCurrent
-							? 'border-primary/20 bg-primary/5'
-							: 'hover:bg-muted/50'}"
-					>
-						<div class="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
-							<DeviceIcon class="size-4 text-muted-foreground" />
-						</div>
-
-						<div class="min-w-0 flex-1">
-							<div class="flex items-center gap-2">
-								<span class="truncate text-sm font-medium">
-									{session.parsed.deviceLabel}
-								</span>
-								{#if isCurrent}
-									<Badge.Badge variant="secondary" class="shrink-0 px-1.5 py-0 text-[10px]"
-										>This device</Badge.Badge
-									>
-								{/if}
+		<div class="p-4">
+			{#if loadingSessions && sessions.length === 0}
+				<div class="py-4 text-center text-sm text-muted-foreground">Loading sessions…</div>
+			{:else if sessions.length === 0}
+				<div class="py-4 text-center text-sm text-muted-foreground">No sessions found.</div>
+			{:else}
+				<div class="space-y-1">
+					{#each sessions as session ((session.id ?? session.token) || Math.random())}
+						{@const isCurrent = isCurrentSession(session)}
+						{@const DeviceIcon = getDeviceIcon(session.parsed.deviceType)}
+						{@const sessionId = session.id ?? session.token ?? ''}
+						<div
+							class="group flex items-center gap-3 rounded-sm border px-3 py-2.5 transition-colors {isCurrent
+								? 'border-primary/20 bg-primary/5'
+								: 'hover:bg-muted/50'}"
+						>
+							<div class="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
+								<DeviceIcon class="size-4 text-muted-foreground" />
 							</div>
-							<div class="flex items-center gap-1.5 text-xs text-muted-foreground">
-								<span>{session.ipAddress || 'Unknown IP'}</span>
-								<span>·</span>
-								<span>{formatDate(session.createdAt)}</span>
-							</div>
-						</div>
 
-						{#if !isCurrent}
-							<Button.Root
-								variant="destructive"
-								size="sm"
-								disabled={revoking[sessionId]}
-								onclick={() => requestRevokeSession(session)}
-							>
-								{revoking[sessionId] ? 'Revoking…' : 'Revoke'}
-							</Button.Root>
-						{/if}
-					</div>
-				{/each}
-			</div>
-		{/if}
+							<div class="min-w-0 flex-1">
+								<div class="flex items-center gap-2">
+									<span class="truncate text-sm font-medium">
+										{session.parsed.deviceLabel}
+									</span>
+									{#if isCurrent}
+										<Badge.Badge variant="secondary" class="shrink-0 px-1.5 py-0 text-[10px]"
+											>This device</Badge.Badge
+										>
+									{/if}
+								</div>
+								<div class="flex items-center gap-1.5 text-xs text-muted-foreground">
+									<span>{session.ipAddress || 'Unknown IP'}</span>
+									<span>·</span>
+									<span>{formatDate(session.createdAt)}</span>
+								</div>
+							</div>
+
+							{#if !isCurrent}
+								<Button.Root
+									variant="destructive"
+									size="sm"
+									disabled={revoking[sessionId]}
+									onclick={() => requestRevokeSession(session)}
+								>
+									{revoking[sessionId] ? 'Revoking…' : 'Revoke'}
+								</Button.Root>
+							{/if}
+						</div>
+					{/each}
+				</div>
+			{/if}
+		</div>
 	</div>
 {/snippet}
 
 {#snippet DangerSection()}
-	<div class="space-y-3">
-		<div class="space-y-1">
-			<h4 class="text-sm font-medium">Delete account</h4>
+	<div class="overflow-hidden rounded-sm border border-destructive/30 bg-destructive/8 shadow-sm">
+		<div class="border-b border-destructive/30 px-4 py-3">
+			<h4 class="text-sm font-medium text-destructive">Delete account</h4>
 			<p class="text-xs text-muted-foreground">
 				Permanently delete your account and all related data.
 			</p>
 		</div>
-		<Button.Root variant="destructive" onclick={() => (deleteConfirmOpen = true)} class="shrink-0">
-			Delete account
-		</Button.Root>
+		<div class="p-4">
+			<Button.Root
+				variant="destructive"
+				onclick={() => (deleteConfirmOpen = true)}
+				class="shrink-0"
+			>
+				Delete account
+			</Button.Root>
+		</div>
 	</div>
 {/snippet}
 
@@ -502,8 +534,7 @@
 	<Drawer.Root bind:open>
 		<Drawer.Content>
 			<Drawer.Header>
-				<Drawer.Title>Account settings</Drawer.Title>
-				<Drawer.Description>Update your profile and manage your account.</Drawer.Description>
+				<Drawer.Title>Account</Drawer.Title>
 			</Drawer.Header>
 			<div class="px-4 pb-4">
 				<Tabs.Root bind:value={mobileTab}>
@@ -533,8 +564,7 @@
 	<Dialog.Root bind:open>
 		<Dialog.Content class="sm:max-w-4xl">
 			<Dialog.Header>
-				<Dialog.Title>Account settings</Dialog.Title>
-				<Dialog.Description>Update your profile and manage your account.</Dialog.Description>
+				<Dialog.Title>Account</Dialog.Title>
 			</Dialog.Header>
 			<div class="grid min-h-72 sm:grid-cols-[180px_minmax(0,1fr)]">
 				<nav class="space-y-1 pr-4">
@@ -552,7 +582,7 @@
 						</Button.Root>
 					{/each}
 				</nav>
-				<div class="h-fit min-w-0 rounded-sm border bg-card p-4 shadow-sm">
+				<div class="min-w-0">
 					{#if desktopTab === 'profile'}
 						{@render ProfileSection()}
 					{:else if desktopTab === 'providers'}
