@@ -16,3 +16,10 @@ Organizers can send announcements to all participants, such as links to resource
 
 ### Timetable
 Participants can view the hackathon timetable and see when events are happening.
+
+# Contributing
+## Development
+Read the [developer docs](docs/README.md) to get started with development.
+
+## Feature ideas
+If you have any feature ideas, please open an issue, or contact us on Slack.
