@@ -1,3 +1,6 @@
+> [!WARNING]
+> These docs are still a work in progress. Please DM Ingo (@inw) on Hack Club Slack if you have any questions.
+
 # Launchpad Developer Docs
 
 ## Overview

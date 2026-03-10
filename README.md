@@ -1,46 +1,34 @@
-# launchpad
+> [!WARNING]
+> Launchpad is still in development and not ready for production yet.
 
-A dashboard for satellite hackathons - coming soon
+# Launchpad
 
-# sv
+Launchpad is a modern hackathon management tool for progress tracking, help requests, and more!
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Features
 
-## Creating a project
+### Progress tracking
 
-If you're seeing this, you've probably already done this step. Congrats!
+Participants can log their team's progress on their project and see what other teams are doing. These logs can be commented on by mentors and other teams. Organizers can set up milestones and track progress towards them.
 
-```sh
-# create a new project
-npx sv create my-app
-```
+### Help requests
 
-To recreate this project with the same configuration:
+Participants can request help from mentors, who can are given logins.
 
-```sh
-# recreate this project
-bun x sv@0.12.4 create --template minimal --types ts --add prettier eslint tailwindcss="plugins:typography" --install bun .
-```
+### Send
 
-## Developing
+Organizers can send announcements to all participants, such as links to resources.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Timetable
 
-```sh
-npm run dev
+Participants can view the hackathon timetable and see when events are happening.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+# Contributing
 
-## Building
+## Development
 
-To create a production version of your app:
+Read the [developer docs](docs/README.md) to get started with development.
 
-```sh
-npm run build
-```
+## Feature ideas
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+If you have any feature ideas, please open an issue, or contact us on Slack.
