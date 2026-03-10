@@ -459,7 +459,7 @@
 				<div class="py-4 text-center text-sm text-muted-foreground">No sessions found.</div>
 			{:else}
 				<div class="space-y-1">
-					{#each sessions as session ((session.id ?? session.token) || Math.random())}
+					{#each sessions as session, i ((session.id ?? session.token) || i)}
 						{@const isCurrent = isCurrentSession(session)}
 						{@const DeviceIcon = getDeviceIcon(session.parsed.deviceType)}
 						{@const sessionId = session.id ?? session.token ?? ''}
