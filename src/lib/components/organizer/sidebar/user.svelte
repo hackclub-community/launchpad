@@ -12,7 +12,7 @@
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 	import { cn } from '$lib/utils';
 	import { type ComponentProps } from 'svelte';
-	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
+	import { buttonVariants } from '$lib/components/ui/button/index.js';
 	import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui';
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
 	import AccountDialog from './account-dialog.svelte';
