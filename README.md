@@ -1,3 +1,5 @@
-# launchpad
+> [!WARNING]
+> Launchpad is still in development and not ready for production yet.
 
-A dashboard for satellite hackathons - coming soon
+# Launchpad
+A hackathon management tool for progress tracking, help requests, and more!
