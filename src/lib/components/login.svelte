@@ -5,7 +5,7 @@
 	import Button from './ui/button/button.svelte';
 	import { authClient } from '$lib/auth-client';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
-	import { ArrowRight, ArrowRightIcon } from '@lucide/svelte';
+	import { ArrowRight, ArrowRightIcon, LoaderCircle } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 	import Label from './ui/label/label.svelte';
 	import * as InputGroup from '$lib/components/ui/input-group/index.js';
@@ -47,49 +47,51 @@
 				<Card.Title>Log in as an organizer</Card.Title>
 			</Card.Header>
 			<Card.Content class="space-y-8">
-				<Button
-					disabled={loading}
-					onclick={async () => {
-						loading = true;
-						toast.promise(
-							authClient.signIn
-								.oauth2({
+				{#if loading}
+					<div class="flex min-h-32 flex-col items-center justify-center gap-3">
+						<LoaderCircle class="size-5 animate-spin" />
+					</div>
+				{:else}
+					<Button
+						disabled={loading}
+						onclick={async () => {
+							loading = true;
+							try {
+								const { error } = await authClient.signIn.oauth2({
 									providerId: 'hca',
 									callbackURL: '/organizer'
-								})
-								.then(({ data, error }) => {
-									if (error) {
-										loading = false;
-										throw error;
-									}
-									return data;
-								}),
-							{
-								loading: 'Loading...',
-								success: 'Redirecting...',
-								error: 'Something went wrong'
+								});
+								if (error) {
+									loading = false;
+									toast.error('Something went wrong');
+								}
+							} catch {
+								loading = false;
+								toast.error('Something went wrong');
 							}
-						);
-					}}>Continue with Hack Club</Button
-				>
-				<form class="flex w-full flex-col gap-2">
-					<Label for="email-{id}">Email</Label>
-					<InputGroup.Root class="w-full">
-						<InputGroup.Input
-							type="email"
-							name="email"
-							id="email-{id}"
-							required
-							placeholder="iwill@hackthisclub.com"
-						/>
-						<InputGroup.Addon align="inline-end">
-							<InputGroup.Button variant="default" type="submit">
-								<ArrowRightIcon />
-								Send Code
-							</InputGroup.Button>
-						</InputGroup.Addon>
-					</InputGroup.Root>
-				</form>
+						}}
+					>
+						Continue with Hack Club
+					</Button>
+					<form class="flex w-full flex-col gap-2">
+						<Label for="email-{id}">Email</Label>
+						<InputGroup.Root class="w-full">
+							<InputGroup.Input
+								type="email"
+								name="email"
+								id="email-{id}"
+								required
+								placeholder="iwill@hackthisclub.com"
+							/>
+							<InputGroup.Addon align="inline-end">
+								<InputGroup.Button variant="default" type="submit">
+									<ArrowRightIcon />
+									Send Code
+								</InputGroup.Button>
+							</InputGroup.Addon>
+						</InputGroup.Root>
+					</form>
+				{/if}
 			</Card.Content>
 		{/if}
 	</Card.Root>
