@@ -447,6 +447,7 @@
 				onclick={() => void loadSessions()}
 				disabled={loadingSessions}
 			>
+				<span class="sr-only">Refresh</span>
 				<RefreshCwIcon class="size-3.5 {loadingSessions ? 'animate-spin' : ''}" />
 			</Button>
 		</div>
