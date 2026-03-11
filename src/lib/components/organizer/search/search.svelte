@@ -5,7 +5,7 @@
 	import { searchState } from './search-state.svelte';
 </script>
 
-<Command.Dialog open={searchState.open} onOpenChange={(open) => (searchState.open = open)}>
+<Command.Dialog bind:open={searchState.open}>
 	<Command.Input placeholder="Type a command or search..." />
 	<Command.List>
 		<Command.Empty>No results found.</Command.Empty>
