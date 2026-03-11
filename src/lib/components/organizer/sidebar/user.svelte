@@ -82,7 +82,7 @@
 			}
 		})}
 	{:else}
-		<DropdownMenu.Root open={accountMenuOpen} onOpenChange={(open) => (accountMenuOpen = open)}>
+		<DropdownMenu.Root bind:open={accountMenuOpen}>
 			<DropdownMenu.Trigger class="w-full">
 				{#snippet child({ props })}
 					{@render menuButton({ props })}
