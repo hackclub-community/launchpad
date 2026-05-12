@@ -56,7 +56,7 @@
 					<div class="grid gap-4">
 						{#each oauthProviders as provider (provider.id)}
 							<Button
-								variant="outline"
+								variant={provider.primary ? 'default' : 'outline'}
 								disabled={loading}
 								onclick={async () => {
 									loading = true;
