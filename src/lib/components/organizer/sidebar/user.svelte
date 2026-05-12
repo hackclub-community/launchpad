@@ -8,7 +8,7 @@
 	import { authClient } from '$lib/auth-client';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
-	import { useQuery } from 'convex-svelte';
+	import { useQuery } from '@mmailaender/convex-svelte';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 	import { cn } from '$lib/utils';
 	import { type ComponentProps } from 'svelte';

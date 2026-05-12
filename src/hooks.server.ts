@@ -1,9 +1,10 @@
 import type { Handle } from '@sveltejs/kit';
-import { createAuth } from '$convex/auth.js';
 import { getToken } from '@mmailaender/convex-better-auth-svelte/sveltekit';
+import { withServerConvexToken } from '@mmailaender/convex-svelte/sveltekit/server';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.token = await getToken(createAuth, event.cookies);
+	const token = getToken(event.cookies);
+	event.locals.token = token;
 
-	return resolve(event);
+	return withServerConvexToken(token, () => resolve(event));
 };
