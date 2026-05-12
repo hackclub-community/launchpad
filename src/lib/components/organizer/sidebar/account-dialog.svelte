@@ -9,7 +9,7 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 
 	import { useSidebar } from '$lib/components/ui/sidebar';
-	import { authClient } from '$lib/auth-client';
+	import { authClient } from '$lib/auth/client';
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 	import {

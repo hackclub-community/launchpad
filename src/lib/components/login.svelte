@@ -3,7 +3,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Item from '$lib/components/ui/item/index.js';
 	import Button from './ui/button/button.svelte';
-	import { authClient } from '$lib/auth-client';
+	import { authClient } from '$lib/auth/client';
 	import { useAuth } from '@mmailaender/convex-better-auth-svelte/svelte';
 	import { ArrowRight, ArrowRightIcon, LoaderCircle } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';

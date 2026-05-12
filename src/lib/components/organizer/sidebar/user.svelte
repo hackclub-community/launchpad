@@ -5,7 +5,7 @@
 	import { ChevronUpIcon, LogOutIcon, SettingsIcon } from '@lucide/svelte';
 	import type { FunctionReturnType } from 'convex/server';
 	import { api } from '$convex/_generated/api';
-	import { authClient } from '$lib/auth-client';
+	import { authClient } from '$lib/auth/client';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
 	import { useQuery } from '@mmailaender/convex-svelte';
