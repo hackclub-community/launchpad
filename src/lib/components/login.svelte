@@ -9,6 +9,7 @@
 	import { toast } from 'svelte-sonner';
 	import Label from './ui/label/label.svelte';
 	import * as InputGroup from '$lib/components/ui/input-group/index.js';
+	import { oauthProviders } from '$lib/auth/providers';
 
 	const auth = useAuth();
 	let loading = $state(false);
@@ -52,27 +53,32 @@
 						<LoaderCircle class="size-5 animate-spin" />
 					</div>
 				{:else}
-					<Button
-						disabled={loading}
-						onclick={async () => {
-							loading = true;
-							try {
-								const { error } = await authClient.signIn.oauth2({
-									providerId: 'hca',
-									callbackURL: '/organizer'
-								});
-								if (error) {
-									loading = false;
-									toast.error('Something went wrong');
-								}
-							} catch {
-								loading = false;
-								toast.error('Something went wrong');
-							}
-						}}
-					>
-						Continue with Hack Club
-					</Button>
+					<div class="grid gap-4">
+						{#each oauthProviders as provider (provider.id)}
+							<Button
+								variant="outline"
+								disabled={loading}
+								onclick={async () => {
+									loading = true;
+									try {
+										const { error } = await authClient.signIn.oauth2({
+											providerId: provider.id,
+											callbackURL: '/organizer'
+										});
+										if (error) {
+											loading = false;
+											toast.error('Something went wrong');
+										}
+									} catch {
+										loading = false;
+										toast.error('Something went wrong');
+									}
+								}}
+							>
+								Continue with {provider.label}
+							</Button>
+						{/each}
+					</div>
 					<form class="flex w-full flex-col gap-2">
 						<Label for="email-{id}">Email</Label>
 						<InputGroup.Root class="w-full">
