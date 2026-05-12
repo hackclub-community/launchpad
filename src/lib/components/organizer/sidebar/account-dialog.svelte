@@ -24,6 +24,7 @@
 	} from '@lucide/svelte';
 	import { UAParser } from 'ua-parser-js';
 	import { cn } from '$lib/utils';
+	import { oauthProviders } from '$lib/auth/providers';
 
 	let {
 		open = $bindable(),
@@ -86,12 +87,6 @@
 		providerId: string;
 		accountId: string;
 	};
-
-	const providerConfigs = [
-		{ id: 'hca', label: 'Hack Club' },
-		{ id: 'github', label: 'GitHub' },
-		{ id: 'google', label: 'Google' }
-	] as const;
 
 	function parseSession(session: SessionItem): ParsedSession {
 		const ua = new UAParser(session.userAgent ?? '');
@@ -174,7 +169,7 @@
 			if (error) throw error;
 		} catch (err) {
 			toast.error(
-				`Failed to link ${providerConfigs.find((p) => p.id === providerId)?.label ?? providerId}`
+				`Failed to link ${oauthProviders.find((p) => p.id === providerId)?.label ?? providerId}`
 			);
 			console.error(err);
 			linkingProvider = { ...linkingProvider, [providerId]: false };
@@ -194,11 +189,11 @@
 			if (error) throw error;
 			accounts = accounts.filter((account) => account.id !== linked.id);
 			toast.success(
-				`${providerConfigs.find((p) => p.id === providerId)?.label ?? providerId} unlinked`
+				`${oauthProviders.find((p) => p.id === providerId)?.label ?? providerId} unlinked`
 			);
 		} catch (err) {
 			toast.error(
-				`Failed to unlink ${providerConfigs.find((p) => p.id === providerId)?.label ?? providerId}`
+				`Failed to unlink ${oauthProviders.find((p) => p.id === providerId)?.label ?? providerId}`
 			);
 			console.error(err);
 		} finally {
@@ -401,7 +396,7 @@
 			<p class="text-xs text-muted-foreground">Link or unlink sign-in providers.</p>
 		</div>
 		<div class="space-y-2 p-4">
-			{#each providerConfigs as provider (provider.id)}
+			{#each oauthProviders as provider (provider.id)}
 				{@const linked = getLinkedAccount(provider.id)}
 				<div class="flex items-center justify-between rounded-sm border px-3 py-2.5">
 					<div class="text-sm font-medium">{provider.label}</div>
