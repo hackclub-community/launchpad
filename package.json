@@ -44,7 +44,7 @@
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.59.3",
 		"unplugin-icons": "^23.0.1",
-		"vaul-svelte": "^0.3.2",
+		"vaul-svelte": "^1.0.0-next.7",
 		"vite": "^8.0.12"
 	},
 	"dependencies": {
