@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import * as Command from '$lib/components/ui/command/index.js';
-	import { menuItems } from '../menu-items';
+	import { menuItems, getHref } from '../menu-items';
 	import { searchState } from './search-state.svelte';
+	import { page } from '$app/state';
+
+	const eventId = page.params.event;
 </script>
 
 <Command.Dialog bind:open={searchState.open}>
@@ -14,8 +17,8 @@
 				{#each item.items as subItem, j (j)}
 					<Command.Item
 						onSelect={() => {
-							if (subItem.href) {
-								goto(subItem.href);
+							if (subItem.path !== undefined) {
+								goto(getHref(eventId, subItem.path));
 							} else if (subItem.onClick) {
 								subItem.onClick();
 							}

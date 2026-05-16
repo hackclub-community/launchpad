@@ -5,7 +5,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import KbdGroup from '$lib/components/ui/kbd/kbd-group.svelte';
 	import Kbd from '$lib/components/ui/kbd/kbd.svelte';
-	import { menuItems } from '../menu-items';
+	import { getHref, menuItems } from '../menu-items';
 	import { searchState } from '../search/search-state.svelte';
 	import User from './user.svelte';
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
@@ -16,6 +16,8 @@
 	const { data } = $props();
 
 	const sidebar = useSidebar();
+
+	const eventId = page.params.event;
 </script>
 
 <Sidebar.Root variant="floating">
@@ -63,14 +65,17 @@
 				<Sidebar.GroupContent>
 					{#each item.items as subItem, j (j)}
 						<Sidebar.MenuItem>
-							<Sidebar.MenuButton isActive={subItem.href === page.url.pathname}>
+							<Sidebar.MenuButton
+								isActive={subItem.path !== undefined &&
+									getHref(eventId, subItem.path) === page.url.pathname}
+							>
 								{#snippet child({ props })}
-									{#if subItem.href}
+									{#if subItem.path !== undefined}
 										<a
 											onclick={() => {
 												sidebar.setOpenMobile(false);
 											}}
-											href={subItem.href}
+											href={getHref(eventId, subItem.path)}
 											{...props}
 											class={cn(props.class || '', 'cursor-pointer')}
 										>

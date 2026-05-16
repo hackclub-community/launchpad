@@ -13,7 +13,7 @@ export const menuItems: {
 	title?: string;
 	items: {
 		title: string;
-		href?: string;
+		path?: string;
 		onClick?: () => void;
 		icon?: Component<IconProps>;
 	}[];
@@ -22,12 +22,12 @@ export const menuItems: {
 		items: [
 			{
 				title: 'Home',
-				href: '/organizer',
+				path: '',
 				icon: HouseIcon
 			},
 			{
 				title: 'Teams',
-				href: '/organizer/teams',
+				path: 'teams',
 				icon: UsersIcon
 			},
 			{
@@ -36,7 +36,7 @@ export const menuItems: {
 			},
 			{
 				title: 'Timeline',
-				href: '/organizer/timeline',
+				path: 'timeline',
 				icon: GalleryVerticalEndIcon
 			}
 		]
@@ -46,14 +46,18 @@ export const menuItems: {
 		items: [
 			{
 				title: 'Event Details',
-				href: '/organizer/details',
+				path: 'details',
 				icon: InfoIcon
 			},
 			{
 				title: 'Organizers',
-				href: '/organizer/organizers',
+				path: 'organizers',
 				icon: UserLockIcon
 			}
 		]
 	}
 ];
+
+export function getHref(eventId: string | undefined, path = '') {
+	return `/organizer/${eventId}${path ? `/${path}` : ''}`;
+}
